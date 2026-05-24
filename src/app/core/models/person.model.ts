@@ -4,7 +4,6 @@ export type Statut = 'Actif' | 'Inactif' | 'En attente';
 export const CIVILITES: readonly Civilite[] = ['M.', 'Mme', 'Mlle'] as const;
 export const STATUTS: readonly Statut[] = ['Actif', 'Inactif', 'En attente'] as const;
 
-/** Représente un adhérent. */
 export interface Person {
   id: string;
   civilite: Civilite;

@@ -12,10 +12,6 @@ import { CurrentUserService } from './current-user.service';
 
 const SHEET = environment.sheets.historique;
 
-/**
- * Service d'audit : log toute action CREATE/UPDATE/DELETE
- * dans la feuille Historique.
- */
 @Injectable({ providedIn: 'root' })
 export class AuditService {
   private readonly api = inject(SheetsApiService);
@@ -44,7 +40,6 @@ export class AuditService {
     const entries = rows.map((row) =>
       rowToObject<AuditEntry>(row, AUDIT_COLUMNS),
     );
-    // tri décroissant par timestamp
     return entries.sort((a, b) => b.timestamp.localeCompare(a.timestamp));
   }
 }

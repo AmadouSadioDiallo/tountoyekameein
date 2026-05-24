@@ -6,8 +6,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { CompteRendu } from '../../core/models';
+import { CompteRendu, Projet } from '../../core/models';
 import { ComptesRendusFacade } from '../../core/services/comptes-rendus.facade';
+import { ProjetsFacade } from '../../core/services/projets.facade';
 import { CurrentUserService } from '../../core/services/current-user.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog.component';
@@ -77,10 +78,21 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog.component';
               </div>
             </div>
           }
+          <div class="field">
+            <mat-icon>folder</mat-icon>
+            <div>
+              <label>Projet</label>
+              @if (projet(); as p) {
+                <a [routerLink]="['/projets', p.id]" class="projet-link">{{ p.nom }}</a>
+              } @else {
+                <span class="muted">Réunion générale (sans projet)</span>
+              }
+            </div>
+          </div>
         </div>
 
         <h3 class="section-title">Compte rendu</h3>
-        <div class="content">{{ c.contenu }}</div>
+        <div class="content ql-editor" [innerHTML]="c.contenu"></div>
 
         <div class="meta-footer">
           <span>Créé le {{ c.dateCreation | date: 'dd/MM/yyyy HH:mm' }}</span>
@@ -91,13 +103,7 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog.component';
   `,
   styles: [
     `
-      .header {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 1.5rem;
-        flex-wrap: wrap;
-      }
+      .header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
       .header h1 { margin: 0; flex: 1; }
       .loading { display: flex; justify-content: center; padding: 4rem; }
       .detail-card { padding: 2rem; }
@@ -126,11 +132,7 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog.component';
         gap: 1.5rem;
         margin-bottom: 2rem;
       }
-      .field {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-      }
+      .field { display: flex; align-items: center; gap: 0.75rem; }
       .field mat-icon { color: #3f51b5; }
       .field label {
         font-size: 0.7rem;
@@ -140,6 +142,13 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog.component';
         display: block;
       }
       .field span { font-size: 1rem; }
+      .projet-link {
+        color: #3f51b5;
+        text-decoration: none;
+        font-weight: 500;
+      }
+      .projet-link:hover { text-decoration: underline; }
+      .muted { color: #888; font-style: italic; }
       .section-title {
         margin: 0 0 1rem;
         color: #3f51b5;
@@ -152,12 +161,14 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog.component';
         background: #fafafa;
         padding: 1.5rem;
         border-radius: 4px;
-        white-space: pre-wrap;
         line-height: 1.6;
         font-size: 1rem;
         color: #333;
         border-left: 3px solid #3f51b5;
       }
+      .content h1, .content h2, .content h3 { margin: 0.5rem 0; }
+      .content ul, .content ol { padding-left: 1.5rem; margin: 0.5rem 0; }
+      .content p { margin: 0.25rem 0; }
       .meta-footer {
         margin-top: 1.5rem;
         padding-top: 1rem;
@@ -173,12 +184,14 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog.component';
 })
 export class CompteRenduDetailComponent implements OnInit {
   private readonly facade = inject(ComptesRendusFacade);
+  private readonly projetsFacade = inject(ProjetsFacade);
   private readonly currentUser = inject(CurrentUserService);
   private readonly route = inject(ActivatedRoute);
   private readonly notif = inject(NotificationService);
   private readonly dialog = inject(MatDialog);
 
   readonly cr = signal<CompteRendu | null>(null);
+  readonly projet = signal<Projet | null>(null);
   readonly loading = signal(true);
   readonly isAdmin = this.currentUser.isAdmin;
 
@@ -186,7 +199,12 @@ export class CompteRenduDetailComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
     try {
-      this.cr.set(await this.facade.findById(id));
+      const cr = await this.facade.findById(id);
+      this.cr.set(cr);
+      if (cr?.projetId) {
+        const p = await this.projetsFacade.findById(cr.projetId);
+        this.projet.set(p);
+      }
     } catch (e: unknown) {
       this.notif.error(e instanceof Error ? e.message : 'Erreur');
     } finally {

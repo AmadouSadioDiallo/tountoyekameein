@@ -1,19 +1,23 @@
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { QuillModule } from 'ngx-quill';
 import {
   CompteRenduFormData,
   CONTENU_MAX_LENGTH,
+  Projet,
 } from '../../core/models';
 import { ComptesRendusFacade } from '../../core/services/comptes-rendus.facade';
+import { ProjetsFacade } from '../../core/services/projets.facade';
 import { NotificationService } from '../../core/services/notification.service';
 import { CurrentUserService } from '../../core/services/current-user.service';
 
@@ -25,12 +29,14 @@ import { CurrentUserService } from '../../core/services/current-user.service';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatButtonModule,
     MatIconModule,
     MatCardModule,
     MatProgressSpinnerModule,
+    QuillModule,
   ],
   template: `
     <div class="header">
@@ -81,37 +87,42 @@ import { CurrentUserService } from '../../core/services/current-user.service';
                 <mat-error>Rédacteur obligatoire</mat-error>
               }
             </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full">
+              <mat-label>Projet lié (optionnel)</mat-label>
+              <mat-select formControlName="projetId">
+                <mat-option [value]="''">— Aucun projet (réunion générale) —</mat-option>
+                @for (p of projets(); track p.id) {
+                  <mat-option [value]="p.id">{{ p.nom }} ({{ p.statut }})</mat-option>
+                }
+              </mat-select>
+              <mat-hint>Laissez vide pour une réunion générale (AG, bureau...). Seuls les projets actifs sont listés.</mat-hint>
+            </mat-form-field>
           </div>
 
           <h3 class="section-title">Contenu</h3>
-          <mat-form-field appearance="outline" class="full">
-            <mat-label>Compte rendu *</mat-label>
-            <textarea
-              matInput
+          <div class="quill-wrapper" [class.invalid]="form.controls.contenu.touched && form.controls.contenu.invalid">
+            <quill-editor
               formControlName="contenu"
-              rows="12"
-              [maxlength]="maxLength"
               placeholder="Rédigez ici le compte rendu..."
-              spellcheck="true"
-              lang="fr"
-              autocorrect="on"
-              autocapitalize="sentences"
-            ></textarea>
-            <mat-hint align="start" class="spell-hint">
-              <mat-icon class="hint-icon">spellcheck</mat-icon>
-              Correcteur orthographique activé (clic droit pour les suggestions)
-            </mat-hint>
-            <mat-hint align="end" [class.warn]="contenuLength() > maxLength * 0.9">
-              {{ contenuLength() }} / {{ maxLength }} caractères
-            </mat-hint>
-            @if (form.controls.contenu.touched && form.controls.contenu.invalid) {
-              @if (form.controls.contenu.errors?.['required']) {
-                <mat-error>Contenu obligatoire</mat-error>
-              } @else if (form.controls.contenu.errors?.['maxlength']) {
-                <mat-error>Le contenu dépasse {{ maxLength }} caractères</mat-error>
+              [modules]="quillModules"
+              (onContentChanged)="onContentChanged($event)"
+            />
+            <div class="quill-footer">
+              @if (form.controls.contenu.touched && form.controls.contenu.invalid) {
+                <span class="quill-error">
+                  @if (form.controls.contenu.errors?.['required']) {
+                    Contenu obligatoire
+                  } @else if (form.controls.contenu.errors?.['maxlength']) {
+                    Le contenu dépasse {{ maxLength }} caractères
+                  }
+                </span>
               }
-            }
-          </mat-form-field>
+              <span class="quill-count" [class.warn]="contenuLength() > maxLength * 0.9">
+                {{ contenuLength() }} / {{ maxLength }} caractères
+              </span>
+            </div>
+          </div>
 
           <div class="actions">
             <a mat-button routerLink="/comptes-rendus">Annuler</a>
@@ -164,33 +175,54 @@ import { CurrentUserService } from '../../core/services/current-user.service';
         border-top: 1px solid #eee;
       }
       .warn { color: #f57c00 !important; font-weight: 500; }
-      .spell-hint {
-        display: inline-flex !important;
+      .quill-wrapper {
+        width: 100%;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(0,0,0,0.12);
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .quill-wrapper ::ng-deep quill-editor { display: block; }
+      .quill-wrapper ::ng-deep .ql-container { min-height: 250px; }
+      .quill-wrapper ::ng-deep .ql-editor { min-height: 250px; }
+      .quill-wrapper:focus-within { border-color: #3f51b5; }
+      .quill-wrapper.invalid { border-color: #f44336; }
+      .quill-footer {
+        display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 0.25rem;
-        color: #4caf50 !important;
+        padding: 0.5rem 1rem;
+        font-size: 0.75rem;
+        color: #888;
+        border-top: 1px solid rgba(0,0,0,0.06);
       }
-      .hint-icon {
-        font-size: 1rem !important;
-        width: 1rem !important;
-        height: 1rem !important;
-        vertical-align: middle;
-      }
+      .quill-error { color: #f44336; font-weight: 500; }
+      .quill-count { margin-left: auto; }
     `,
   ],
 })
 export class CompteRenduFormComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly facade = inject(ComptesRendusFacade);
+  private readonly projetsFacade = inject(ProjetsFacade);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly notif = inject(NotificationService);
   private readonly currentUser = inject(CurrentUserService);
 
   readonly maxLength = CONTENU_MAX_LENGTH;
+  readonly quillModules = {
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      ['clean'],
+    ],
+  };
   readonly loading = signal(false);
   readonly submitting = signal(false);
   readonly isEdit = signal(false);
+  readonly projets = signal<Projet[]>([]);
   private editId: string | null = null;
 
   readonly form = this.fb.nonNullable.group({
@@ -198,45 +230,52 @@ export class CompteRenduFormComponent implements OnInit {
     date: [new Date(), [Validators.required]],
     lieu: ['', [Validators.maxLength(250)]],
     redacteur: ['', [Validators.required, Validators.maxLength(250)]],
-    contenu: ['', [Validators.required, Validators.maxLength(CONTENU_MAX_LENGTH)]],
+    projetId: [''],
+    contenu: ['', [Validators.required]],
   });
 
   readonly contenuLength = signal(0);
 
-  ngOnInit(): void {
-    // Pré-remplir le rédacteur avec le nom de l'utilisateur connecté
-    const u = this.currentUser.user();
-    if (u && !this.isEdit()) {
-      this.form.patchValue({ redacteur: u.name });
-    }
-
-    // Suivre la longueur du contenu pour le compteur
-    this.form.controls.contenu.valueChanges.subscribe((v) => {
-      this.contenuLength.set((v ?? '').length);
-    });
-
-    this.loadIfEdit();
-  }
-
-  private async loadIfEdit(): Promise<void> {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (!id) return;
-
-    this.editId = id;
-    this.isEdit.set(true);
+  async ngOnInit(): Promise<void> {
     this.loading.set(true);
     try {
+      const projets = await this.projetsFacade.findAll(false);
+      this.projets.set(projets);
+
+      const u = this.currentUser.user();
+
+      const projetIdQuery = this.route.snapshot.queryParamMap.get('projetId');
+      if (projetIdQuery) {
+        this.form.patchValue({ projetId: projetIdQuery });
+      }
+
+
+      const id = this.route.snapshot.paramMap.get('id');
+      if (!id) {
+        if (u) this.form.patchValue({ redacteur: u.name });
+        return;
+      }
+
+      this.editId = id;
+      this.isEdit.set(true);
       const cr = await this.facade.findById(id);
       if (!cr) {
         this.notif.error('Compte rendu introuvable');
         this.router.navigate(['/comptes-rendus']);
         return;
       }
+
+      if (cr.projetId && !projets.find((p) => p.id === cr.projetId)) {
+        const allProjets = await this.projetsFacade.findAll(true);
+        this.projets.set(allProjets);
+      }
+
       this.form.patchValue({
         nomReunion: cr.nomReunion,
         date: new Date(cr.date),
         lieu: cr.lieu ?? '',
         redacteur: cr.redacteur,
+        projetId: cr.projetId ?? '',
         contenu: cr.contenu,
       });
       this.contenuLength.set(cr.contenu.length);
@@ -244,6 +283,16 @@ export class CompteRenduFormComponent implements OnInit {
       this.notif.error(e instanceof Error ? e.message : 'Erreur de chargement');
     } finally {
       this.loading.set(false);
+    }
+  }
+
+  onContentChanged(event: { text: string }): void {
+    const len = (event.text ?? '').trim().length;
+    this.contenuLength.set(len);
+    if (len > this.maxLength) {
+      this.form.controls.contenu.setErrors({ maxlength: true });
+    } else {
+      this.form.controls.contenu.updateValueAndValidity();
     }
   }
 
@@ -260,6 +309,7 @@ export class CompteRenduFormComponent implements OnInit {
         date: raw.date.toISOString().slice(0, 10),
         lieu: raw.lieu || undefined,
         redacteur: raw.redacteur,
+        projetId: raw.projetId || undefined,
         contenu: raw.contenu,
       };
       if (this.isEdit() && this.editId) {

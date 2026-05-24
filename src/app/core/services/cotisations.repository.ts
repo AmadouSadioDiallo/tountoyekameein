@@ -72,7 +72,6 @@ export class CotisationsRepository {
     await this.api.updateRow(SHEET, idx, objectToRow(deleted, [...COTISATION_COLUMNS]));
   }
 
-  /** Renvoie un Map personId -> total cotisé. */
   async getTotalsByPerson(): Promise<Map<string, number>> {
     const all = await this.findAll();
     const totals = new Map<string, number>();
@@ -82,7 +81,6 @@ export class CotisationsRepository {
     return totals;
   }
 
-  /** Renvoie un Map projetId -> total collecté. */
   async getTotalsByProjet(): Promise<Map<string, number>> {
     const all = await this.findAll();
     const totals = new Map<string, number>();

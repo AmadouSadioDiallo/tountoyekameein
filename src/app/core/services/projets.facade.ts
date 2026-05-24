@@ -8,7 +8,6 @@ export class ProjetsFacade {
   private readonly repo = inject(ProjetsRepository);
   private readonly audit = inject(AuditService);
 
-  /** Par défaut, n'inclut PAS les archivés. */
   findAll = (includeArchived = false) => this.repo.findAll(includeArchived);
   findById = (id: string) => this.repo.findById(id);
 

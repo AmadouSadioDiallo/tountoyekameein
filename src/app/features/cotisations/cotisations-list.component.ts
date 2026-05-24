@@ -115,7 +115,6 @@ interface CotisationRow {
       </mat-card>
 
       @if (responsive.isMobile()) {
-        <!-- Vue cartes mobile -->
         <div class="cards-grid">
           @for (r of filteredRows(); track r.cotisation.id) {
             <mat-card class="cot-card">
@@ -287,11 +286,8 @@ export class CotisationsListComponent implements OnInit {
 
   readonly cotisations = signal<Cotisation[]>([]);
   readonly persons = signal<Person[]>([]);
-  /** Tous les projets non archivés (pour le filtre du select). */
   readonly projets = signal<Projet[]>([]);
-  /** Tous les projets (archivés inclus, pour résoudre les noms même si archivés). */
   readonly allProjets = signal<Projet[]>([]);
-  /** IDs des projets archivés - pour masquer ces cotisations de la liste. */
   readonly archivedProjetIds = signal<Set<string>>(new Set());
   readonly loading = signal(true);
   readonly modes = MODES_PAIEMENT;
@@ -305,7 +301,6 @@ export class CotisationsListComponent implements OnInit {
     'id', 'date', 'personne', 'projet', 'montant', 'mode', 'periode', 'actions',
   ];
 
-  /** Cotisations dont le projet n'est PAS archivé. */
   readonly visibleCotisations = computed(() =>
     this.cotisations().filter((c) => !this.archivedProjetIds().has(c.projetId)),
   );

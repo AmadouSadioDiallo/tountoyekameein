@@ -1,13 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-/**
- * Pipe pour formater les montants en GNF (Franc Guinéen).
- * Format : "50 000 GNF" (espace comme séparateur de milliers, sans décimales).
- *
- * Usage :
- *   {{ 50000 | gnf }}      → "50 000 GNF"
- *   {{ value | gnf:false }} → "50 000" (sans suffixe)
- */
 @Pipe({
   name: 'gnf',
   standalone: true,
@@ -18,7 +10,7 @@ export class GnfPipe implements PipeTransform {
     const rounded = Math.round(value);
     const formatted = rounded
       .toString()
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ' '); // ajoute des espaces tous les 3 chiffres
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     return withSuffix ? `${formatted} GNF` : formatted;
   }
 }

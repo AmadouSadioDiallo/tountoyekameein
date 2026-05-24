@@ -10,27 +10,14 @@ interface GoogleUserInfo {
   picture: string;
 }
 
-/**
- * Service d'authentification Google.
- * Utilise Google Identity Services (GIS) — nouveau standard, remplace gapi.auth2.
- *
- * Workflow :
- *  1. initialize() : charge gapi.client + le token client GIS
- *  2. signIn()     : déclenche le popup OAuth, récupère un access_token
- *  3. fetchUserInfo() : récupère email/nom/photo via l'API userinfo
- */
 @Injectable({ providedIn: 'root' })
 export class GoogleAuthService {
-  /** L'utilisateur Google connecté (sans le rôle applicatif). */
   readonly googleUser = signal<GoogleUserInfo | null>(null);
-
-  /** Indique si l'initialisation gapi/gis est terminée. */
   readonly isReady = signal(false);
 
   private tokenClient: any = null;
   private accessToken: string | null = null;
 
-  /** À appeler une seule fois au démarrage de l'app. */
   async initialize(): Promise<void> {
     await this.loadScript('https://apis.google.com/js/api.js');
     await this.loadScript('https://accounts.google.com/gsi/client');
@@ -44,13 +31,12 @@ export class GoogleAuthService {
     this.tokenClient = google.accounts.oauth2.initTokenClient({
       client_id: environment.googleClientId,
       scope: environment.oauthScopes,
-      callback: () => {}, // remplacé dynamiquement dans signIn()
+      callback: () => {},
     });
 
     this.isReady.set(true);
   }
 
-  /** Lance le flow OAuth. Resolve avec l'utilisateur connecté. */
   signIn(): Promise<GoogleUserInfo> {
     return new Promise((resolve, reject) => {
       if (!this.tokenClient) {
@@ -86,7 +72,6 @@ export class GoogleAuthService {
     sessionStorage.removeItem('gauth_expiry');
   }
 
-  /** Tente de restaurer une session existante (token en sessionStorage). */
   async tryRestoreSession(): Promise<boolean> {
     const token = sessionStorage.getItem('gauth_token');
     const expiry = sessionStorage.getItem('gauth_expiry');
@@ -110,8 +95,6 @@ export class GoogleAuthService {
   getAccessToken(): string | null {
     return this.accessToken;
   }
-
-  // ---- privé ----
 
   private async fetchUserInfo(): Promise<GoogleUserInfo> {
     const resp = await fetch(

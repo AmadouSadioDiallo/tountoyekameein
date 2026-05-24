@@ -17,7 +17,6 @@ const NUMBER_FIELDS = ['coutEstime'] as const;
 export class ProjetsRepository {
   private readonly api = inject(SheetsApiService);
 
-  /** Récupère tous les projets non supprimés. includeArchived contrôle si on inclut les archivés. */
   async findAll(includeArchived = false, includeDeleted = false): Promise<Projet[]> {
     const rows = await this.api.readAll(SHEET);
     let projets = rows.map((row) =>
@@ -67,7 +66,6 @@ export class ProjetsRepository {
     return updated;
   }
 
-  /** Bascule l'état archive d'un projet. */
   async setArchive(id: string, archive: boolean): Promise<Projet> {
     const rows = await this.api.readAll(SHEET);
     const idx = rows.findIndex((row) => row[0] === id);

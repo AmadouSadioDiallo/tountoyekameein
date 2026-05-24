@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npx ng:*)",
+      "Bash(grep -r $indigo node_modules/@angular/material/ --include=*.scss -l)"
+    ]
+  }
+}

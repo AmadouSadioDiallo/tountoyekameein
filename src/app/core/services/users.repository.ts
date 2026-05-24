@@ -18,7 +18,6 @@ export class UsersRepository {
     );
   }
 
-  /** Trouve l'utilisateur par email (case insensitive). Renvoie null si inexistant ou inactif. */
   async findByEmail(email: string): Promise<AppUser | null> {
     const all = await this.findAll();
     const found = all.find(

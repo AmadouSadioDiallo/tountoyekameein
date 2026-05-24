@@ -12,15 +12,10 @@ import { nextId } from '../utils/id-generator';
 const SHEET = environment.sheets.persons;
 const BOOLEAN_FIELDS = ['supprime'] as const;
 
-/**
- * Repository des Persons. Encapsule toute la logique de persistance.
- * Les composants ne devraient jamais appeler SheetsApiService directement.
- */
 @Injectable({ providedIn: 'root' })
 export class PersonsRepository {
   private readonly api = inject(SheetsApiService);
 
-  /** Récupère toutes les personnes non supprimées (par défaut). */
   async findAll(includeDeleted = false): Promise<Person[]> {
     const rows = await this.api.readAll(SHEET);
     const persons = rows.map((row) =>
@@ -76,7 +71,6 @@ export class PersonsRepository {
     return updated;
   }
 
-  /** Suppression logique : marque `supprime = TRUE`. */
   async softDelete(id: string): Promise<void> {
     const rows = await this.api.readAll(SHEET);
     const idx = rows.findIndex((row) => row[0] === id);

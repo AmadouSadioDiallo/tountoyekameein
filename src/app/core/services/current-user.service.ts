@@ -3,10 +3,6 @@ import { CurrentUser } from '../models/user.model';
 import { GoogleAuthService } from './google-auth.service';
 import { UsersRepository } from './users.repository';
 
-/**
- * État de l'utilisateur courant : email/photo (Google) + rôle (Sheet).
- * Tous les composants/guards consomment ce service plutôt que GoogleAuthService.
- */
 @Injectable({ providedIn: 'root' })
 export class CurrentUserService {
   private readonly googleAuth = inject(GoogleAuthService);
@@ -18,7 +14,6 @@ export class CurrentUserService {
   readonly isAuthenticated = computed(() => this._user() !== null);
   readonly isAdmin = computed(() => this._user()?.role === 'ADMIN');
 
-  /** Résout le rôle après une connexion Google réussie. */
   async resolveCurrentUser(): Promise<CurrentUser | null> {
     const gUser = this.googleAuth.googleUser();
     if (!gUser) {
@@ -27,7 +22,6 @@ export class CurrentUserService {
     }
     const appUser = await this.usersRepo.findByEmail(gUser.email);
     if (!appUser) {
-      // Email non autorisé / inactif → on déconnecte
       this.googleAuth.signOut();
       this._user.set(null);
       throw new Error(

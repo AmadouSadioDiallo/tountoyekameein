@@ -17,8 +17,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {
   CIVILITES,
+  Civilite,
   PersonFormData,
   STATUTS,
+  Statut,
 } from '../../core/models';
 import { PersonsFacade } from '../../core/services/persons.facade';
 import { NotificationService } from '../../core/services/notification.service';
@@ -56,7 +58,6 @@ import { NotificationService } from '../../core/services/notification.service';
       <mat-card class="form-card">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-          <!-- Section : État civil -->
           <h3 class="section-title">État civil</h3>
           <div class="grid">
             <mat-form-field appearance="outline">
@@ -92,7 +93,6 @@ import { NotificationService } from '../../core/services/notification.service';
 
           <mat-divider />
 
-          <!-- Section : Naissance -->
           <h3 class="section-title">Naissance</h3>
           <div class="grid">
             <mat-form-field appearance="outline">
@@ -121,7 +121,6 @@ import { NotificationService } from '../../core/services/notification.service';
 
           <mat-divider />
 
-          <!-- Section : Filiation -->
           <h3 class="section-title">Filiation <span class="optional">(optionnel)</span></h3>
           <div class="grid">
             <mat-form-field appearance="outline">
@@ -137,7 +136,6 @@ import { NotificationService } from '../../core/services/notification.service';
 
           <mat-divider />
 
-          <!-- Section : Contact -->
           <h3 class="section-title">Contact</h3>
           <div class="grid">
             <mat-form-field appearance="outline">
@@ -159,7 +157,6 @@ import { NotificationService } from '../../core/services/notification.service';
 
           <mat-divider />
 
-          <!-- Section : Adresse -->
           <h3 class="section-title">Adresse</h3>
           <div class="grid">
             <mat-form-field appearance="outline" class="full">
@@ -189,7 +186,6 @@ import { NotificationService } from '../../core/services/notification.service';
 
           <mat-divider />
 
-          <!-- Section : Statut + Notes -->
           <h3 class="section-title">Complément</h3>
           <div class="grid">
             <mat-form-field appearance="outline">
@@ -283,7 +279,7 @@ export class PersonFormComponent implements OnInit {
   private editId: string | null = null;
 
   readonly form = this.fb.nonNullable.group({
-    civilite: ['M.' as const, [Validators.required]],
+    civilite: ['M.' as Civilite, [Validators.required]],
     nom: ['', [Validators.required, Validators.maxLength(250)]],
     prenom: ['', [Validators.required, Validators.maxLength(250)]],
     email: ['', [Validators.email]],
@@ -295,8 +291,8 @@ export class PersonFormComponent implements OnInit {
     nomMere: ['', [Validators.maxLength(250)]],
     adresse: ['', [Validators.required]],
     ville: ['', [Validators.required]],
-    pays: ['France', [Validators.required]],
-    statut: ['Actif' as const, [Validators.required]],
+    pays: ['Guinée', [Validators.required]],
+    statut: ['Actif' as Statut, [Validators.required]],
     notes: [''],
   });
 

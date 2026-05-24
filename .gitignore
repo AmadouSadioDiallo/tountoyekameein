@@ -60,13 +60,12 @@ Thumbs.db
 .env.*.local
 
 # Angular environment files (optional)
-src/environments/environment*.ts
+src/environments/environment-local.ts
 
 # Compiled TypeScript files
 *.tsbuildinfo
 
 # Package manager files
-package-lock.json
 yarn.lock
 pnpm-lock.yaml
 

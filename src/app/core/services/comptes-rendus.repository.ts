@@ -29,6 +29,22 @@ export class ComptesRendusRepository {
     return all.find((c) => c.id === id) ?? null;
   }
 
+  async findByProjetId(projetId: string): Promise<CompteRendu[]> {
+    const all = await this.findAll();
+    return all.filter((c) => c.projetId === projetId);
+  }
+
+  async getCountsByProjet(): Promise<Map<string, number>> {
+    const all = await this.findAll();
+    const counts = new Map<string, number>();
+    for (const cr of all) {
+      if (cr.projetId) {
+        counts.set(cr.projetId, (counts.get(cr.projetId) ?? 0) + 1);
+      }
+    }
+    return counts;
+  }
+
   async create(data: CompteRenduFormData): Promise<CompteRendu> {
     const all = await this.findAll(true);
     const now = new Date().toISOString();

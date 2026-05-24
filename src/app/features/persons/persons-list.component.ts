@@ -92,7 +92,6 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog.component';
         <mat-progress-spinner mode="indeterminate" diameter="50" />
       </div>
     } @else if (responsive.isMobile()) {
-      <!-- Vue carte (mobile) -->
       <div class="cards-grid">
         @for (p of paginatedPersons(); track p.id) {
           <mat-card class="person-card">
@@ -133,7 +132,6 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog.component';
         }
       </div>
     } @else {
-      <!-- Vue tableau (desktop/tablette) -->
       <div class="table-container">
         <table mat-table [dataSource]="paginatedPersons()" class="mat-elevation-z2">
           <ng-container matColumnDef="id">
@@ -248,7 +246,6 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog.component';
       .chip-inactif { background: #eeeeee; color: #424242; }
       .chip-en-attente { background: #fff3e0; color: #e65100; }
 
-      /* Vue cartes */
       .cards-grid {
         display: flex;
         flex-direction: column;

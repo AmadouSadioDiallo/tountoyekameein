@@ -10,6 +10,8 @@ export class ComptesRendusFacade {
 
   findAll = () => this.repo.findAll();
   findById = (id: string) => this.repo.findById(id);
+  findByProjetId = (projetId: string) => this.repo.findByProjetId(projetId);
+  getCountsByProjet = () => this.repo.getCountsByProjet();
 
   async create(data: CompteRenduFormData): Promise<CompteRendu> {
     const cr = await this.repo.create(data);

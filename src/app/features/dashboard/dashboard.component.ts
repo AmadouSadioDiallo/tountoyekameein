@@ -1,5 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -27,11 +28,14 @@ interface ProjetCard {
   progression: number;
 }
 
+const MAX_PROJETS_AFFICHES = 6;
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
     RouterLink,
+    DecimalPipe,
     GnfPipe,
     MatCardModule,
     MatIconModule,
@@ -40,7 +44,7 @@ interface ProjetCard {
     MatButtonModule,
   ],
   template: `
-    <h1 class="page-title">Bonjour {{ user()?.name }} 👋</h1>
+    <h1 class="page-title">Bonjour {{ user()?.name }} </h1>
 
     @if (loading()) {
       <div class="loading">
@@ -202,7 +206,7 @@ export class DashboardComponent implements OnInit {
       this.projetCards.set(
         projets
           .filter((p) => p.statut === 'Actif')
-          .slice(0, 6)
+          .slice(0, MAX_PROJETS_AFFICHES)
           .map((p) => {
             const obtenu = totalsByProjet.get(p.id) ?? 0;
             const progression = p.coutEstime > 0

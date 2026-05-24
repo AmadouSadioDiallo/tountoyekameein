@@ -185,7 +185,6 @@ export class MainLayoutComponent {
   readonly user = this.currentUser.user;
 
   constructor() {
-    // Fermer automatiquement le drawer après navigation (uniquement sur mobile)
     this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
       .subscribe(() => {
@@ -196,7 +195,6 @@ export class MainLayoutComponent {
   }
 
   onNavClick(): void {
-    // Sécurité : ferme aussi au clic direct (utile sur tablette en mode tactile)
     if (this.responsive.isHandset() && this.drawer?.opened) {
       setTimeout(() => this.drawer.close(), 150);
     }

@@ -23,8 +23,12 @@
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
+            "allowedCommonJsDependencies": ["quill-delta"],
             "assets": [],
-            "styles": ["src/styles.scss"],
+            "styles": [
+              "node_modules/quill/dist/quill.snow.css",
+              "src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -62,5 +66,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "9448f69e-499a-4ebf-99cd-702408148891"
   }
 }

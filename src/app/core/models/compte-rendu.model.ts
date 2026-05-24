@@ -1,11 +1,11 @@
-/** Compte rendu de réunion. */
 export interface CompteRendu {
-  id: string;              // CR-0001
+  id: string;
   nomReunion: string;
-  date: string;            // ISO YYYY-MM-DD
+  date: string;
   lieu?: string;
   redacteur: string;
-  contenu: string;         // max 2000 caractères
+  projetId?: string;
+  contenu: string;
   dateCreation: string;
   dateModif: string;
   supprime: boolean;
@@ -22,6 +22,7 @@ export const COMPTE_RENDU_COLUMNS = [
   'date',
   'lieu',
   'redacteur',
+  'projetId',
   'contenu',
   'dateCreation',
   'dateModif',
@@ -30,5 +31,4 @@ export const COMPTE_RENDU_COLUMNS = [
 
 export type CompteRenduColumn = (typeof COMPTE_RENDU_COLUMNS)[number];
 
-/** Limite de caractères pour le contenu. */
 export const CONTENU_MAX_LENGTH = 5000;

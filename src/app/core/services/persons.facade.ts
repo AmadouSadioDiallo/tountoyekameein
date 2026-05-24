@@ -3,11 +3,6 @@ import { PersonsRepository } from './persons.repository';
 import { AuditService } from './audit.service';
 import { Person, PersonFormData } from '../models/person.model';
 
-/**
- * Façade Persons : combine le repository et l'audit.
- * Les composants utilisent ce service (pas le repository directement)
- * pour que l'audit soit toujours loggué.
- */
 @Injectable({ providedIn: 'root' })
 export class PersonsFacade {
   private readonly repo = inject(PersonsRepository);

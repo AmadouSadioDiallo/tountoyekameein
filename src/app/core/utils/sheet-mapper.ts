@@ -1,11 +1,4 @@
-/**
- * Utilitaires de conversion entre lignes du Sheet (any[]) et objets typés.
- * Le Sheet renvoie des tableaux indexés par colonne ; on convertit via les
- * en-têtes définis dans les modèles (ex: PERSON_COLUMNS).
- */
-
-/** Convertit un objet en ligne (tableau) selon l'ordre des colonnes. */
-export function objectToRow<T extends Record<string, unknown>>(
+export function objectToRow<T extends object>(
   obj: T,
   columns: readonly (keyof T & string)[],
 ): unknown[] {
@@ -17,8 +10,7 @@ export function objectToRow<T extends Record<string, unknown>>(
   });
 }
 
-/** Convertit une ligne (tableau) en objet selon l'ordre des colonnes. */
-export function rowToObject<T extends Record<string, unknown>>(
+export function rowToObject<T extends object>(
   row: unknown[],
   columns: readonly (keyof T & string)[],
   booleanFields: readonly (keyof T)[] = [],
@@ -30,7 +22,8 @@ export function rowToObject<T extends Record<string, unknown>>(
     if (booleanFields.includes(col)) {
       (obj as Record<string, unknown>)[col] = raw === 'TRUE' || raw === true;
     } else if (numberFields.includes(col)) {
-      (obj as Record<string, unknown>)[col] = raw === '' || raw == null ? 0 : Number(raw);
+      const num = Number(raw);
+      (obj as Record<string, unknown>)[col] = raw === '' || raw == null || isNaN(num) ? 0 : num;
     } else {
       (obj as Record<string, unknown>)[col] = raw ?? '';
     }

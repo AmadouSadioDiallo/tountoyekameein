@@ -6,14 +6,13 @@ export const STATUTS_PROJET: readonly StatutProjet[] = [
   'Annulé',
 ] as const;
 
-/** Représente un projet/cause pour lequel on collecte des cotisations. */
 export interface Projet {
-  id: string;                 // PROJ-0001
+  id: string;
   nom: string;
   description?: string;
-  coutEstime: number;          // anciennement montantEstime
+  coutEstime: number;
   statut: StatutProjet;
-  archive: boolean;            // nouveau : visibilité dans les listes
+  archive: boolean;
   dateCreation: string;
   dateModif: string;
   supprime: boolean;

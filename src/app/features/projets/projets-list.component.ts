@@ -1,5 +1,6 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -33,6 +34,7 @@ interface ProjetRow {
   standalone: true,
   imports: [
     RouterLink,
+    DecimalPipe,
     FormsModule,
     GnfPipe,
     MatTableModule,
@@ -90,7 +92,6 @@ interface ProjetRow {
         <mat-progress-spinner mode="indeterminate" diameter="50" />
       </div>
     } @else if (responsive.isMobile()) {
-      <!-- Vue cartes mobile -->
       <div class="cards-grid">
         @for (r of filteredRows(); track r.projet.id) {
           <mat-card class="projet-card" [class.archived]="r.projet.archive" [routerLink]="['/projets', r.projet.id]">
@@ -150,7 +151,6 @@ interface ProjetRow {
         }
       </div>
     } @else {
-      <!-- Vue tableau desktop -->
       <div class="table-container">
         <table mat-table [dataSource]="filteredRows()" class="mat-elevation-z2">
           <ng-container matColumnDef="id">
@@ -162,7 +162,7 @@ interface ProjetRow {
             <td mat-cell *matCellDef="let r">
               <a [routerLink]="['/projets', r.projet.id]" class="link">{{ r.projet.nom }}</a>
               @if (r.projet.archive) {
-                <span class="chip-archive-inline">📦 Archivé</span>
+                <span class="chip-archive-inline">Archivé</span>
               }
             </td>
           </ng-container>
@@ -284,7 +284,6 @@ interface ProjetRow {
       .pct { font-size: 0.85rem; color: #555; min-width: 50px; text-align: right; }
       .badges { display: flex; flex-direction: column; gap: 0.25rem; align-items: flex-end; }
 
-      /* Mobile cards */
       .cards-grid { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem; }
       .projet-card { padding: 1rem; cursor: pointer; }
       .projet-card.archived { opacity: 0.7; background: #fafafa; }

@@ -86,7 +86,7 @@ import { NotificationService } from '../../core/services/notification.service';
         <tr mat-row *matRowDef="let row; columns: columns"></tr>
         <tr class="mat-row" *matNoDataRow>
           <td class="mat-cell no-data" [attr.colspan]="columns.length">
-            Toutes les personnes ont cotisé 🎉
+            Toutes les personnes ont cotisé
           </td>
         </tr>
       </table>

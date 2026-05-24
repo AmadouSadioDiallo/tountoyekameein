@@ -8,13 +8,13 @@ export const MODES_PAIEMENT: readonly ModePaiement[] = [
 ] as const;
 
 export interface Cotisation {
-  id: string;             // COT-0001
-  personId: string;       // référence Person
-  projetId: string;       // référence Projet
+  id: string;
+  personId: string;
+  projetId: string;
   montant: number;
-  date: string;           // ISO YYYY-MM-DD
+  date: string;
   modePaiement: ModePaiement;
-  periode: string;        // ex: "2026", "2026/2027"
+  periode: string;
   notes?: string;
   supprime: boolean;
 }

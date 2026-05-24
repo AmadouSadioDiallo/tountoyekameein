@@ -14,6 +14,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import {
   CotisationFormData,
   MODES_PAIEMENT,
+  ModePaiement,
   Person,
   Projet,
 } from '../../core/models';
@@ -208,7 +209,7 @@ export class CotisationFormComponent implements OnInit {
     projetId: ['', [Validators.required]],
     montant: [0, [Validators.required, Validators.min(1)]],
     date: [new Date(), [Validators.required]],
-    modePaiement: ['Espèces' as const, [Validators.required]],
+    modePaiement: ['Espèces' as ModePaiement, [Validators.required]],
     periode: [new Date().getFullYear().toString(), [Validators.required]],
     notes: [''],
   });
@@ -216,7 +217,6 @@ export class CotisationFormComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.loading.set(true);
     try {
-      // projets sans archivés pour la création
       const [persons, projets] = await Promise.all([
         this.personsFacade.findAll(),
         this.projetsFacade.findAll(false),
@@ -240,7 +240,6 @@ export class CotisationFormComponent implements OnInit {
         return;
       }
 
-      // En édition, si le projet est archivé on l'ajoute à la liste pour pouvoir l'afficher
       if (!projets.find((p) => p.id === cotisation.projetId)) {
         const allProjets = await this.projetsFacade.findAll(true);
         this.projets.set(allProjets);

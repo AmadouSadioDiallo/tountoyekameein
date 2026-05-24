@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ProjetFormData, STATUTS_PROJET } from '../../core/models';
+import { ProjetFormData, STATUTS_PROJET, StatutProjet } from '../../core/models';
 import { ProjetsFacade } from '../../core/services/projets.facade';
 import { NotificationService } from '../../core/services/notification.service';
 
@@ -137,7 +137,7 @@ export class ProjetFormComponent implements OnInit {
     nom: ['', [Validators.required, Validators.maxLength(250)]],
     description: [''],
     coutEstime: [0, [Validators.required, Validators.min(0)]],
-    statut: ['Actif' as const, [Validators.required]],
+    statut: ['Actif' as StatutProjet, [Validators.required]],
   });
 
   async ngOnInit(): Promise<void> {
