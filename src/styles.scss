@@ -1,0 +1,74 @@
+@use '@angular/material' as mat;
+
+html {
+  color-scheme: light;
+  @include mat.theme((
+    color: (
+      theme-type: light,
+      primary: mat.$indigo-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: #f5f5f7;
+  color: #222;
+  -webkit-tap-highlight-color: transparent;
+}
+
+* { box-sizing: border-box; }
+
+/* Snackbar styles */
+.snack-success {
+  --mdc-snackbar-container-color: #2e7d32;
+  --mdc-snackbar-supporting-text-color: white;
+  --mat-snack-bar-button-color: white;
+}
+.snack-error {
+  --mdc-snackbar-container-color: #c62828;
+  --mdc-snackbar-supporting-text-color: white;
+  --mat-snack-bar-button-color: white;
+}
+
+/* === RESPONSIVE GLOBAL === */
+
+/* Mobile (< 600px) */
+@media (max-width: 599px) {
+  h1 { font-size: 1.4rem !important; }
+  h2 { font-size: 1.2rem !important; }
+  h3 { font-size: 1rem !important; }
+
+  /* Dialog plein écran sur mobile pour confort */
+  .mat-mdc-dialog-container {
+    max-width: 95vw !important;
+  }
+
+  /* Snackbar en bas sur mobile */
+  .mat-mdc-snack-bar-container {
+    margin-bottom: 1rem !important;
+  }
+
+  /* Réduit la taille des paginators mobiles */
+  .mat-mdc-paginator-page-size {
+    display: none !important;
+  }
+}
+
+/* Tablette (600-959px) */
+@media (min-width: 600px) and (max-width: 959px) {
+  h1 { font-size: 1.5rem; }
+}
+
+/* Améliorer la lisibilité tactile */
+@media (pointer: coarse) {
+  .mat-mdc-icon-button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}

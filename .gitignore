@@ -1,0 +1,106 @@
+# ============================================
+# Angular / Node.js / TypeScript .gitignore
+# ============================================
+
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/build
+
+# Angular cache
+/.angular/cache
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+/coverage
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# VSCode
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Angular environment files (optional)
+src/environments/environment*.ts
+
+# Compiled TypeScript files
+*.tsbuildinfo
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Firebase
+.firebase/
+.firebaserc
+
+# ESLint cache
+.eslintcache
+
+# Test results
+/test-results
+/playwright-report
+
+# Cypress
+/cypress/videos/
+/cypress/screenshots/
+
+# JetBrains IDEs
+*.iml
+
+# MacOS
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+# Windows
+ehthumbs.db
+Desktop.ini
+
+# Optional npm cache
+.npm
+
+# Optional stylelint cache
+.stylelintcache
