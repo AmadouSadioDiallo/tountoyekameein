@@ -89,7 +89,7 @@ pnpm-lock.yaml
 *.iml
 
 # MacOS
-.AppleDouble
+.AppleDouble11
 .LSOverride
 
 # Linux
