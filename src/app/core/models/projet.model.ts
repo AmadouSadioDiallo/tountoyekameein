@@ -34,5 +34,3 @@ export const PROJET_COLUMNS = [
   'dateModif',
   'supprime',
 ] as const;
-
-export type ProjetColumn = (typeof PROJET_COLUMNS)[number];

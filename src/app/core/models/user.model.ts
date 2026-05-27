@@ -14,4 +14,3 @@ export interface CurrentUser {
 }
 
 export const USER_COLUMNS = ['email', 'role', 'actif'] as const;
-export type UserColumn = (typeof USER_COLUMNS)[number];

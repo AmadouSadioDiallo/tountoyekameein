@@ -28,7 +28,4 @@ export const COMPTE_RENDU_COLUMNS = [
   'dateModif',
   'supprime',
 ] as const;
-
-export type CompteRenduColumn = (typeof COMPTE_RENDU_COLUMNS)[number];
-
 export const CONTENU_MAX_LENGTH = 5000;

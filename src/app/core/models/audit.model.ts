@@ -18,5 +18,3 @@ export const AUDIT_COLUMNS = [
   'entityId',
   'details',
 ] as const;
-
-export type AuditColumn = (typeof AUDIT_COLUMNS)[number];

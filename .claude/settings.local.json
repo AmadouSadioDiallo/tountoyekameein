@@ -3,7 +3,13 @@
     "allow": [
       "Bash(npm install:*)",
       "Bash(npx ng:*)",
-      "Bash(grep -r $indigo node_modules/@angular/material/ --include=*.scss -l)"
+      "Bash(grep -r $indigo node_modules/@angular/material/ --include=*.scss -l)",
+      "Bash(grep -n \"import.*PaginatorModule\\\\|MatPaginatorModule\" /c/Users/PC/Documents/Docs/Projects/tountoyeKaMeein/tountoyekameein-membres-app-v5/tountoyekameein-membres-app/src/app/features/**/*.ts)",
+      "Bash(for model:*)",
+      "Bash(do echo:*)",
+      "Bash(grep -r $model /c/Users/PC/Documents/Docs/Projects/tountoyeKaMeein/tountoyekameein-membres-app-v5/tountoyekameein-membres-app/src/app --include=*.ts)",
+      "Bash(done)",
+      "Bash(grep -r \"PersonColumn\\\\|ProjetColumn\\\\|CotisationColumn\\\\|CompteRenduColumn\\\\|AuditColumn\\\\|UserColumn\" /c/Users/PC/Documents/Docs/Projects/tountoyeKaMeein/tountoyekameein-membres-app-v5/tountoyekameein-membres-app/src/app --include=*.ts)"
     ]
   }
 }

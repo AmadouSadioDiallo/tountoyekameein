@@ -52,5 +52,3 @@ export const PERSON_COLUMNS = [
   'dateModif',
   'supprime',
 ] as const;
-
-export type PersonColumn = (typeof PERSON_COLUMNS)[number];

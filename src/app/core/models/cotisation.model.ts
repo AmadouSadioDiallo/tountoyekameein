@@ -32,5 +32,3 @@ export const COTISATION_COLUMNS = [
   'notes',
   'supprime',
 ] as const;
-
-export type CotisationColumn = (typeof COTISATION_COLUMNS)[number];
