@@ -14,6 +14,7 @@ export class CotisationsFacade {
   findByProjetId = (projetId: string) => this.repo.findByProjetId(projetId);
   getTotalsByPerson = () => this.repo.getTotalsByPerson();
   getTotalsByProjet = () => this.repo.getTotalsByProjet();
+  getStatsByPersonForProjet = (projetId: string) => this.repo.getStatsByPersonForProjet(projetId);
 
   async create(data: CotisationFormData): Promise<Cotisation> {
     const cotisation = await this.repo.create(data);
@@ -23,7 +24,6 @@ export class CotisationsFacade {
 
   async update(id: string, data: CotisationFormData): Promise<Cotisation> {
     const before = await this.repo.findById(id);
-    if (!before) throw new Error(`Cotisation ${id} introuvable.`);
     const after = await this.repo.update(id, data);
     await this.audit.log('UPDATE', 'Cotisation', id, { before, after });
     return after;
@@ -31,7 +31,6 @@ export class CotisationsFacade {
 
   async delete(id: string): Promise<void> {
     const before = await this.repo.findById(id);
-    if (!before) throw new Error(`Cotisation ${id} introuvable.`);
     await this.repo.softDelete(id);
     await this.audit.log('DELETE', 'Cotisation', id, { before });
   }

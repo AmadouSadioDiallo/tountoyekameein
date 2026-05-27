@@ -144,6 +144,40 @@ interface CotisationRow {
         </div>
       </mat-card>
 
+      <div class="contributors-grid">
+        <mat-card class="contrib-card contrib-yes" [routerLink]="['/projets', p.id, 'contributors']">
+          <div class="contrib-header">
+            <mat-icon class="contrib-icon yes">paid</mat-icon>
+            <mat-icon class="contrib-arrow">chevron_right</mat-icon>
+          </div>
+          <div class="contrib-count">{{ nbContributors() }}</div>
+          <div class="contrib-label">
+            @if (nbContributors() <= 1) {
+              Personne a cotisé
+            } @else {
+              Personnes ont cotisé
+            }
+          </div>
+          <div class="contrib-sub">Voir la liste →</div>
+        </mat-card>
+
+        <mat-card class="contrib-card contrib-no" [routerLink]="['/projets', p.id, 'non-contributors']">
+          <div class="contrib-header">
+            <mat-icon class="contrib-icon no">money_off</mat-icon>
+            <mat-icon class="contrib-arrow">chevron_right</mat-icon>
+          </div>
+          <div class="contrib-count">{{ nbNonContributors() }}</div>
+          <div class="contrib-label">
+            @if (nbNonContributors() <= 1) {
+              Personne n'a pas cotisé
+            } @else {
+              Personnes n'ont pas cotisé
+            }
+          </div>
+          <div class="contrib-sub">Voir la liste →</div>
+        </mat-card>
+      </div>
+
       <mat-card class="cotisations-card">
         <div class="cot-header">
           <h2>Cotisations rattachées</h2>
@@ -226,6 +260,53 @@ interface CotisationRow {
       .cr-count strong { font-size: 1.5rem; color: #3f51b5; margin-right: 0.25rem; }
       .cr-sub { font-size: 0.85rem; color: #888; margin-top: 0.25rem; }
       .cr-arrow { color: #999; }
+
+      .contributors-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .contrib-card {
+        padding: 1.5rem;
+        cursor: pointer;
+        transition: box-shadow 0.15s, transform 0.15s;
+      }
+      .contrib-card:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transform: translateY(-2px);
+      }
+      .contrib-yes { border-left: 4px solid #4caf50; }
+      .contrib-no { border-left: 4px solid #f57c00; }
+      .contrib-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+      .contrib-icon {
+        font-size: 2rem;
+        width: 2rem;
+        height: 2rem;
+      }
+      .contrib-icon.yes { color: #4caf50; }
+      .contrib-icon.no { color: #f57c00; }
+      .contrib-arrow { color: #999; }
+      .contrib-count {
+        font-size: 2.5rem;
+        font-weight: 600;
+        color: #333;
+        line-height: 1.1;
+      }
+      .contrib-label {
+        font-size: 0.95rem;
+        color: #555;
+        margin-bottom: 0.5rem;
+      }
+      .contrib-sub {
+        font-size: 0.85rem;
+        color: #888;
+      }
       .detail-card.archived { background: #fafafa; }
       .archived-banner {
         display: flex;
@@ -324,6 +405,8 @@ export class ProjetDetailComponent implements OnInit {
   readonly projet = signal<Projet | null>(null);
   readonly rows = signal<CotisationRow[]>([]);
   readonly nbComptesRendus = signal(0);
+  readonly nbContributors = signal(0);
+  readonly nbNonContributors = signal(0);
   readonly loading = signal(true);
   readonly isAdmin = this.currentUser.isAdmin;
   readonly cotColumns = ['date', 'personne', 'montant', 'mode', 'periode'];
@@ -346,14 +429,22 @@ export class ProjetDetailComponent implements OnInit {
     if (!id) return;
     this.loading.set(true);
     try {
-      const [projet, cots, persons, crs] = await Promise.all([
+      const [projet, cots, persons, crs, statsProjet] = await Promise.all([
         this.projetsFacade.findById(id),
         this.cotisationsFacade.findByProjetId(id),
         this.personsFacade.findAll(),
         this.comptesRendusFacade.findByProjetId(id),
+        this.cotisationsFacade.getStatsByPersonForProjet(id),
       ]);
       this.projet.set(projet);
       this.nbComptesRendus.set(crs.length);
+
+      this.nbContributors.set(statsProjet.size);
+      const contributorIds = new Set(statsProjet.keys());
+      this.nbNonContributors.set(
+        persons.filter((p) => p.statut === 'Actif' && !contributorIds.has(p.id)).length,
+      );
+
       const byId = new Map(persons.map((p) => [p.id, p]));
       this.rows.set(
         cots

@@ -72,6 +72,7 @@ export class CotisationsRepository {
     await this.api.updateRow(SHEET, idx, objectToRow(deleted, [...COTISATION_COLUMNS]));
   }
 
+  /** Renvoie un Map personId -> total cotisé. */
   async getTotalsByPerson(): Promise<Map<string, number>> {
     const all = await this.findAll();
     const totals = new Map<string, number>();
@@ -81,6 +82,7 @@ export class CotisationsRepository {
     return totals;
   }
 
+  /** Renvoie un Map projetId -> total collecté. */
   async getTotalsByProjet(): Promise<Map<string, number>> {
     const all = await this.findAll();
     const totals = new Map<string, number>();
@@ -88,5 +90,22 @@ export class CotisationsRepository {
       totals.set(c.projetId, (totals.get(c.projetId) ?? 0) + c.montant);
     }
     return totals;
+  }
+
+  /**
+   * Pour un projet donné, renvoie un Map personId -> { total, count }.
+   * Permet de savoir qui a cotisé et combien à ce projet.
+   */
+  async getStatsByPersonForProjet(projetId: string): Promise<Map<string, { total: number; count: number }>> {
+    const cotisationsProjet = await this.findByProjetId(projetId);
+    const stats = new Map<string, { total: number; count: number }>();
+    for (const c of cotisationsProjet) {
+      const current = stats.get(c.personId) ?? { total: 0, count: 0 };
+      stats.set(c.personId, {
+        total: current.total + c.montant,
+        count: current.count + 1,
+      });
+    }
+    return stats;
   }
 }
