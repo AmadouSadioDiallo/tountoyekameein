@@ -1,4 +1,4 @@
-export type Role = 'ADMIN' | 'STANDARD';
+export type Role = 'ADMIN' | 'MEMBER';
 
 export interface AppUser {
   email: string;
