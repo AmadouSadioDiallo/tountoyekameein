@@ -14,7 +14,10 @@ import { PersonsFacade } from '../../core/services/persons.facade';
 import { CotisationsFacade } from '../../core/services/cotisations.facade';
 import { NotificationService } from '../../core/services/notification.service';
 import { ResponsiveService } from '../../core/services/responsive.service';
+import { PdfExportService, PdfColumn } from '../../core/services/pdf-export.service';
 import { GnfPipe } from '../../core/pipes/gnf.pipe';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ColumnSelectionDialogComponent } from '../shared/column-selection-dialog.component';
 
 @Component({
   selector: 'app-projet-non-contributors',
@@ -30,6 +33,7 @@ import { GnfPipe } from '../../core/pipes/gnf.pipe';
     MatIconModule,
     MatCardModule,
     MatProgressSpinnerModule,
+    MatDialogModule,
   ],
   template: `
     <div class="header">
@@ -40,6 +44,12 @@ import { GnfPipe } from '../../core/pipes/gnf.pipe';
         <mat-icon class="title-icon">money_off</mat-icon>
         N'ont pas cotisé à ce projet
       </h1>
+      @if (nonContributors().length > 0) {
+        <button mat-flat-button color="primary" (click)="exportPdf()">
+          <mat-icon>picture_as_pdf</mat-icon>
+          @if (!responsive.isMobile()) { <span>Exporter PDF</span> }
+        </button>
+      }
     </div>
 
     @if (loading()) {
@@ -77,11 +87,10 @@ import { GnfPipe } from '../../core/pipes/gnf.pipe';
       <mat-form-field appearance="outline" class="search">
         <mat-label>Rechercher</mat-label>
         <mat-icon matPrefix>search</mat-icon>
-        <input matInput [(ngModel)]="searchTerm" placeholder="Nom, prénom, email..." />
+        <input matInput [(ngModel)]="searchTerm" placeholder="Nom, prénom, ville..." />
       </mat-form-field>
 
       @if (responsive.isMobile()) {
-        <!-- Vue cartes mobile -->
         <div class="cards-grid">
           @for (person of filteredPersons(); track person.id) {
             <mat-card class="person-card" [routerLink]="['/persons', person.id]">
@@ -90,10 +99,10 @@ import { GnfPipe } from '../../core/pipes/gnf.pipe';
                 <span class="card-id">{{ person.id }}</span>
               </div>
               <div class="card-body">
-                @if (person.email) {
+                @if (person.nomPere) {
                   <div class="card-row">
-                    <mat-icon>email</mat-icon>
-                    <span>{{ person.email }}</span>
+                    <mat-icon>family_restroom</mat-icon>
+                    <span>Père : {{ person.nomPere }}</span>
                   </div>
                 }
                 @if (person.telephone) {
@@ -115,7 +124,6 @@ import { GnfPipe } from '../../core/pipes/gnf.pipe';
           }
         </div>
       } @else {
-        <!-- Vue tableau desktop -->
         <div class="table-wrap">
           <table mat-table [dataSource]="filteredPersons()" class="mat-elevation-z2">
             <ng-container matColumnDef="id">
@@ -130,9 +138,9 @@ import { GnfPipe } from '../../core/pipes/gnf.pipe';
                 </a>
               </td>
             </ng-container>
-            <ng-container matColumnDef="email">
-              <th mat-header-cell *matHeaderCellDef>Email</th>
-              <td mat-cell *matCellDef="let p">{{ p.email || '—' }}</td>
+            <ng-container matColumnDef="nomPere">
+              <th mat-header-cell *matHeaderCellDef>Nom du père</th>
+              <td mat-cell *matCellDef="let p">{{ p.nomPere || '—' }}</td>
             </ng-container>
             <ng-container matColumnDef="telephone">
               <th mat-header-cell *matHeaderCellDef>Téléphone</th>
@@ -224,9 +232,13 @@ export class ProjetNonContributorsComponent implements OnInit {
   private readonly projetsFacade = inject(ProjetsFacade);
   private readonly personsFacade = inject(PersonsFacade);
   private readonly cotisationsFacade = inject(CotisationsFacade);
+  private readonly pdfService = inject(PdfExportService);
+  private readonly dialog = inject(MatDialog);
   private readonly route = inject(ActivatedRoute);
   private readonly notif = inject(NotificationService);
   readonly responsive = inject(ResponsiveService);
+
+  private readonly gnfPipe = new GnfPipe();
 
   readonly projetId = signal('');
   readonly projet = signal<Projet | null>(null);
@@ -234,7 +246,21 @@ export class ProjetNonContributorsComponent implements OnInit {
   readonly loading = signal(true);
   searchTerm = '';
 
-  readonly columns = ['id', 'nom', 'email', 'telephone', 'ville'];
+  readonly columns = ['id', 'nom', 'nomPere', 'telephone', 'ville'];
+
+  private readonly pdfColumns: PdfColumn[] = [
+    { key: 'id', label: 'ID', width: 20 },
+    { key: 'fullName', label: 'Nom complet' },
+    { key: 'civilite', label: 'Civilité', width: 20 },
+    { key: 'nom', label: 'Nom' },
+    { key: 'prenom', label: 'Prénom' },
+    { key: 'nomPere', label: 'Nom du père' },
+    { key: 'telephone', label: 'Téléphone' },
+    { key: 'adresse', label: 'Adresse' },
+    { key: 'ville', label: 'Ville' },
+    { key: 'pays', label: 'Pays' },
+    { key: 'total', label: 'Total cotisé', align: 'right', width: 35 },
+  ];
 
   readonly filteredPersons = computed(() => {
     const term = this.searchTerm.toLowerCase().trim();
@@ -243,7 +269,6 @@ export class ProjetNonContributorsComponent implements OnInit {
       (p) =>
         p.nom.toLowerCase().includes(term) ||
         p.prenom.toLowerCase().includes(term) ||
-        p.email.toLowerCase().includes(term) ||
         p.id.toLowerCase().includes(term) ||
         p.ville.toLowerCase().includes(term),
     );
@@ -261,7 +286,6 @@ export class ProjetNonContributorsComponent implements OnInit {
       ]);
       this.projet.set(projet);
 
-      // Filtre : personnes actives qui n'ont PAS cotisé à ce projet
       const contributorIds = new Set(stats.keys());
       const nonContrib = persons
         .filter((p) => p.statut === 'Actif' && !contributorIds.has(p.id))
@@ -271,6 +295,67 @@ export class ProjetNonContributorsComponent implements OnInit {
       this.notif.error(e instanceof Error ? e.message : 'Erreur');
     } finally {
       this.loading.set(false);
+    }
+  }
+
+  exportPdf(): void {
+    const projet = this.projet();
+    if (!projet) return;
+
+    const defaultSelected = ['fullName', 'nomPere', 'ville', 'total'];
+
+    const ref = this.dialog.open(ColumnSelectionDialogComponent, {
+      width: '500px',
+      data: {
+        title: 'Exporter la liste des non-contributeurs',
+        columns: this.pdfColumns,
+        defaultSelected,
+      },
+    });
+
+    ref.afterClosed().subscribe((selectedKeys: string[] | null) => {
+      if (!selectedKeys || selectedKeys.length === 0) return;
+
+      const rows = this.filteredPersons();
+      const dateSlug = new Date().toISOString().slice(0, 10);
+      const projetSlug = projet.nom
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .toLowerCase()
+        .slice(0, 40);
+
+      this.pdfService.exportTable<Person>({
+        title: "N'ont pas cotisé à ce projet",
+        subtitle: `Projet : ${projet.nom}`,
+        columns: this.pdfColumns,
+        selectedColumnKeys: selectedKeys,
+        stats: [
+          { label: 'Personnes à relancer', value: String(rows.length) },
+          { label: 'Statut filtré', value: 'Actif uniquement' },
+        ],
+        rows,
+        cellValue: (p, key) => this.formatCell(p, key),
+        filename: `non-contributeurs-${projetSlug}-${dateSlug}`,
+      });
+
+      this.notif.success('PDF téléchargé');
+    });
+  }
+
+  private formatCell(p: Person, key: string): string {
+    switch (key) {
+      case 'id': return p.id;
+      case 'fullName': return `${p.civilite} ${p.nom} ${p.prenom}`;
+      case 'civilite': return p.civilite;
+      case 'nom': return p.nom;
+      case 'prenom': return p.prenom;
+      case 'nomPere': return p.nomPere ?? '';
+      case 'telephone': return p.telephone ?? '';
+      case 'adresse': return p.adresse;
+      case 'ville': return p.ville;
+      case 'pays': return p.pays;
+      case 'total': return this.gnfPipe.transform(0);
+      default: return '';
     }
   }
 }

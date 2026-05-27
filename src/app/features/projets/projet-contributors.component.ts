@@ -14,7 +14,10 @@ import { PersonsFacade } from '../../core/services/persons.facade';
 import { CotisationsFacade } from '../../core/services/cotisations.facade';
 import { NotificationService } from '../../core/services/notification.service';
 import { ResponsiveService } from '../../core/services/responsive.service';
+import { PdfExportService, PdfColumn } from '../../core/services/pdf-export.service';
 import { GnfPipe } from '../../core/pipes/gnf.pipe';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ColumnSelectionDialogComponent } from '../shared/column-selection-dialog.component';
 
 interface ContributorRow {
   person: Person;
@@ -36,6 +39,7 @@ interface ContributorRow {
     MatIconModule,
     MatCardModule,
     MatProgressSpinnerModule,
+    MatDialogModule,
   ],
   template: `
     <div class="header">
@@ -46,6 +50,12 @@ interface ContributorRow {
         <mat-icon class="title-icon">paid</mat-icon>
         Ont cotisé à ce projet
       </h1>
+      @if (rows().length > 0) {
+        <button mat-flat-button color="primary" (click)="exportPdf()">
+          <mat-icon>picture_as_pdf</mat-icon>
+          @if (!responsive.isMobile()) { <span>Exporter PDF</span> }
+        </button>
+      }
     </div>
 
     @if (loading()) {
@@ -99,11 +109,10 @@ interface ContributorRow {
       <mat-form-field appearance="outline" class="search">
         <mat-label>Rechercher</mat-label>
         <mat-icon matPrefix>search</mat-icon>
-        <input matInput [(ngModel)]="searchTerm" placeholder="Nom, prénom, email..." />
+        <input matInput [(ngModel)]="searchTerm" placeholder="Nom, prénom, ID..." />
       </mat-form-field>
 
       @if (responsive.isMobile()) {
-        <!-- Vue cartes mobile -->
         <div class="cards-grid">
           @for (r of filteredRows(); track r.person.id) {
             <mat-card class="contrib-card" [routerLink]="['/persons', r.person.id]">
@@ -111,6 +120,12 @@ interface ContributorRow {
                 <strong>{{ r.person.civilite }} {{ r.person.nom }} {{ r.person.prenom }}</strong>
                 <span class="card-id">{{ r.person.id }}</span>
               </div>
+              @if (r.person.nomPere) {
+                <div class="card-pere">
+                  <mat-icon>family_restroom</mat-icon>
+                  <span>Père : {{ r.person.nomPere }}</span>
+                </div>
+              }
               <div class="card-amounts">
                 <div>
                   <span class="label">Total</span>
@@ -121,19 +136,12 @@ interface ContributorRow {
                   <strong>{{ r.count }}</strong>
                 </div>
               </div>
-              @if (r.person.email) {
-                <div class="card-contact">
-                  <mat-icon>email</mat-icon>
-                  <span>{{ r.person.email }}</span>
-                </div>
-              }
             </mat-card>
           } @empty {
             <mat-card class="empty-card">Aucun contributeur trouvé.</mat-card>
           }
         </div>
       } @else {
-        <!-- Vue tableau desktop -->
         <div class="table-wrap">
           <table mat-table [dataSource]="filteredRows()" class="mat-elevation-z2">
             <ng-container matColumnDef="id">
@@ -148,9 +156,9 @@ interface ContributorRow {
                 </a>
               </td>
             </ng-container>
-            <ng-container matColumnDef="email">
-              <th mat-header-cell *matHeaderCellDef>Email</th>
-              <td mat-cell *matCellDef="let r">{{ r.person.email || '—' }}</td>
+            <ng-container matColumnDef="nomPere">
+              <th mat-header-cell *matHeaderCellDef>Nom du père</th>
+              <td mat-cell *matCellDef="let r">{{ r.person.nomPere || '—' }}</td>
             </ng-container>
             <ng-container matColumnDef="telephone">
               <th mat-header-cell *matHeaderCellDef>Téléphone</th>
@@ -250,6 +258,16 @@ interface ContributorRow {
         color: #555;
       }
       .card-contact mat-icon { font-size: 1rem; width: 1rem; height: 1rem; color: #888; }
+      .card-pere {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.85rem;
+        color: #555;
+        font-style: italic;
+      }
+      .card-pere mat-icon { font-size: 1rem; width: 1rem; height: 1rem; color: #888; }
       .empty-card { padding: 2rem; text-align: center; color: #888; font-style: italic; }
     `,
   ],
@@ -258,9 +276,13 @@ export class ProjetContributorsComponent implements OnInit {
   private readonly projetsFacade = inject(ProjetsFacade);
   private readonly personsFacade = inject(PersonsFacade);
   private readonly cotisationsFacade = inject(CotisationsFacade);
+  private readonly pdfService = inject(PdfExportService);
+  private readonly dialog = inject(MatDialog);
   private readonly route = inject(ActivatedRoute);
   private readonly notif = inject(NotificationService);
   readonly responsive = inject(ResponsiveService);
+
+  private readonly gnfPipe = new GnfPipe();
 
   readonly projetId = signal('');
   readonly projet = signal<Projet | null>(null);
@@ -268,7 +290,21 @@ export class ProjetContributorsComponent implements OnInit {
   readonly loading = signal(true);
   searchTerm = '';
 
-  readonly columns = ['id', 'nom', 'email', 'telephone', 'count', 'total'];
+  readonly columns = ['id', 'nom', 'nomPere', 'telephone', 'count', 'total'];
+
+  private readonly pdfColumns: PdfColumn[] = [
+    { key: 'id', label: 'ID', width: 20 },
+    { key: 'fullName', label: 'Nom complet' },
+    { key: 'civilite', label: 'Civilité', width: 20 },
+    { key: 'nom', label: 'Nom' },
+    { key: 'prenom', label: 'Prénom' },
+    { key: 'nomPere', label: 'Nom du père' },
+    { key: 'telephone', label: 'Téléphone' },
+    { key: 'ville', label: 'Ville' },
+    { key: 'pays', label: 'Pays' },
+    { key: 'count', label: 'Nb cotisations', align: 'center', width: 25 },
+    { key: 'total', label: 'Total cotisé', align: 'right', width: 35 },
+  ];
 
   readonly filteredRows = computed(() => {
     const term = this.searchTerm.toLowerCase().trim();
@@ -277,7 +313,6 @@ export class ProjetContributorsComponent implements OnInit {
       (r) =>
         r.person.nom.toLowerCase().includes(term) ||
         r.person.prenom.toLowerCase().includes(term) ||
-        r.person.email.toLowerCase().includes(term) ||
         r.person.id.toLowerCase().includes(term),
     );
   });
@@ -316,6 +351,69 @@ export class ProjetContributorsComponent implements OnInit {
       this.notif.error(e instanceof Error ? e.message : 'Erreur');
     } finally {
       this.loading.set(false);
+    }
+  }
+
+  exportPdf(): void {
+    const projet = this.projet();
+    if (!projet) return;
+
+    const defaultSelected = ['fullName', 'nomPere', 'ville', 'total'];
+
+    const ref = this.dialog.open(ColumnSelectionDialogComponent, {
+      width: '500px',
+      data: {
+        title: 'Exporter la liste des contributeurs',
+        columns: this.pdfColumns,
+        defaultSelected,
+      },
+    });
+
+    ref.afterClosed().subscribe((selectedKeys: string[] | null) => {
+      if (!selectedKeys || selectedKeys.length === 0) return;
+
+      const rows = this.filteredRows();
+      const dateSlug = new Date().toISOString().slice(0, 10);
+      const projetSlug = projet.nom
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .toLowerCase()
+        .slice(0, 40);
+
+      this.pdfService.exportTable<ContributorRow>({
+        title: 'Liste des contributeurs',
+        subtitle: `Projet : ${projet.nom}`,
+        columns: this.pdfColumns,
+        selectedColumnKeys: selectedKeys,
+        stats: [
+          { label: 'Contributeurs', value: String(rows.length) },
+          { label: 'Total collecté', value: this.gnfPipe.transform(this.totalCollecte()) },
+          { label: 'Cotisations', value: String(this.totalCotisations()) },
+        ],
+        rows,
+        cellValue: (r, key) => this.formatCell(r, key),
+        filename: `contributeurs-${projetSlug}-${dateSlug}`,
+      });
+
+      this.notif.success('PDF téléchargé');
+    });
+  }
+
+  private formatCell(row: ContributorRow, key: string): string {
+    const p = row.person;
+    switch (key) {
+      case 'id': return p.id;
+      case 'fullName': return `${p.civilite} ${p.nom} ${p.prenom}`;
+      case 'civilite': return p.civilite;
+      case 'nom': return p.nom;
+      case 'prenom': return p.prenom;
+      case 'nomPere': return p.nomPere ?? '';
+      case 'telephone': return p.telephone ?? '';
+      case 'ville': return p.ville;
+      case 'pays': return p.pays;
+      case 'count': return String(row.count);
+      case 'total': return this.gnfPipe.transform(row.total);
+      default: return '';
     }
   }
 }
