@@ -38,8 +38,8 @@ import { ResponsiveService } from '../core/services/responsive.service';
         <div class="brand">
           <mat-icon class="brand-icon">groups</mat-icon>
           <div>
-            <div class="brand-title">Adhérents</div>
-            <div class="brand-sub">Gestion</div>
+            <div class="brand-title">Tountoye Ka Méeïn</div>
+            <div class="brand-sub">Gestion Adhérents</div>
           </div>
         </div>
         <mat-nav-list (click)="onNavClick()">
