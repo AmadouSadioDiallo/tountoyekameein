@@ -83,21 +83,21 @@ interface ContributorRow {
       <mat-card class="summary-card">
         <div class="summary-row">
           <div class="summary-item">
-            <mat-icon style="color:#4caf50">people</mat-icon>
+            <mat-icon class="icon-success">people</mat-icon>
             <div>
               <div class="metric-value">{{ filteredRows().length }}</div>
               <div class="metric-label">Contributeur(s)</div>
             </div>
           </div>
           <div class="summary-item">
-            <mat-icon style="color:#3f51b5">paid</mat-icon>
+            <mat-icon class="icon-primary">paid</mat-icon>
             <div>
               <div class="metric-value">{{ totalCollecte() | gnf }}</div>
               <div class="metric-label">Total collecté</div>
             </div>
           </div>
           <div class="summary-item">
-            <mat-icon style="color:#ff9800">receipt</mat-icon>
+            <mat-icon class="icon-warning-alt">receipt</mat-icon>
             <div>
               <div class="metric-value">{{ totalCotisations() }}</div>
               <div class="metric-label">Cotisation(s)</div>
@@ -184,93 +184,7 @@ interface ContributorRow {
       }
     }
   `,
-  styles: [
-    `
-      .header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-      .header h1 { margin: 0; display: flex; align-items: center; gap: 0.5rem; }
-      .title-icon { color: #4caf50; }
-      .loading { display: flex; justify-content: center; padding: 4rem; }
-      .projet-info-card { padding: 1.5rem; margin-bottom: 1rem; }
-      .projet-info {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 1.5rem;
-      }
-      .projet-info .label {
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        color: #888;
-        letter-spacing: 0.05em;
-        margin-bottom: 0.25rem;
-      }
-      .projet-link { color: #3f51b5; text-decoration: none; font-weight: 500; font-size: 1.05rem; }
-      .projet-link:hover { text-decoration: underline; }
-      .chip {
-        padding: 4px 10px;
-        border-radius: 12px;
-        font-size: 0.85rem;
-        font-weight: 500;
-      }
-      .chip-actif { background: #c8e6c9; color: #1b5e20; }
-      .chip-terminé { background: #bbdefb; color: #0d47a1; }
-      .chip-annulé { background: #ffcdd2; color: #b71c1c; }
-      .summary-card { padding: 1.5rem; margin-bottom: 1rem; }
-      .summary-row { display: flex; gap: 2.5rem; flex-wrap: wrap; }
-      .summary-item { display: flex; align-items: center; gap: 1rem; }
-      .summary-item mat-icon { font-size: 2.5rem; width: 2.5rem; height: 2.5rem; }
-      .metric-value { font-size: 1.5rem; font-weight: 600; color: #333; }
-      .metric-label { color: #888; font-size: 0.85rem; }
-      .search { width: 100%; max-width: 400px; margin-bottom: 1rem; }
-      .table-wrap { overflow: auto; background: white; border-radius: 4px; }
-      table { width: 100%; }
-      .link { color: #3f51b5; text-decoration: none; font-weight: 500; }
-      .link:hover { text-decoration: underline; }
-      .total { color: #3f51b5; }
-      .no-data { text-align: center; padding: 2rem; color: #888; }
-
-      .cards-grid { display: flex; flex-direction: column; gap: 0.75rem; }
-      .contrib-card { padding: 1rem; cursor: pointer; }
-      .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 0.5rem;
-        margin-bottom: 0.75rem;
-      }
-      .card-header strong { font-size: 1rem; }
-      .card-id { font-size: 0.75rem; color: #888; }
-      .card-amounts {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-        padding: 0.5rem 0;
-        border-top: 1px solid #f0f0f0;
-        border-bottom: 1px solid #f0f0f0;
-      }
-      .card-amounts > div { display: flex; flex-direction: column; gap: 0.25rem; }
-      .label { font-size: 0.7rem; text-transform: uppercase; color: #888; }
-      .card-contact {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-top: 0.75rem;
-        font-size: 0.85rem;
-        color: #555;
-      }
-      .card-contact mat-icon { font-size: 1rem; width: 1rem; height: 1rem; color: #888; }
-      .card-pere {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 0.5rem;
-        font-size: 0.85rem;
-        color: #555;
-        font-style: italic;
-      }
-      .card-pere mat-icon { font-size: 1rem; width: 1rem; height: 1rem; color: #888; }
-      .empty-card { padding: 2rem; text-align: center; color: #888; font-style: italic; }
-    `,
-  ],
+  styleUrl: './projet-contributors.component.scss',
 })
 export class ProjetContributorsComponent implements OnInit {
   private readonly projetsFacade = inject(ProjetsFacade);

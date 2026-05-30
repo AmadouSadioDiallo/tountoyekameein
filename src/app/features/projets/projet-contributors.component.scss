@@ -1,0 +1,89 @@
+@use 'app/styles/variables' as *;
+
+.header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.header h1 { margin: 0; display: flex; align-items: center; gap: 0.5rem; }
+.title-icon { color: $color-success; }
+.loading { display: flex; justify-content: center; padding: 4rem; }
+.projet-info-card { padding: 1.5rem; margin-bottom: 1rem; }
+.projet-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+}
+.projet-info .label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: $color-text-muted;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+.projet-link { color: $color-primary; text-decoration: none; font-weight: 500; font-size: 1.05rem; }
+.projet-link:hover { text-decoration: underline; }
+.chip {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.chip-actif { background: $color-success-light; color: $color-success-dark; }
+.chip-terminé { background: $color-info-light; color: $color-info-dark; }
+.chip-annulé { background: $color-error-light; color: $color-error-dark; }
+.summary-card { padding: 1.5rem; margin-bottom: 1rem; }
+.summary-row { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+.summary-item { display: flex; align-items: center; gap: 1rem; }
+.summary-item mat-icon { font-size: 2.5rem; width: 2.5rem; height: 2.5rem; }
+.metric-value { font-size: 1.5rem; font-weight: 600; color: $color-text-dark; }
+.metric-label { color: $color-text-muted; font-size: 0.85rem; }
+.search { width: 100%; max-width: 400px; margin-bottom: 1rem; }
+.table-wrap { overflow: auto; background: white; border-radius: 4px; }
+table { width: 100%; }
+.link { color: $color-primary; text-decoration: none; font-weight: 500; }
+.link:hover { text-decoration: underline; }
+.total { color: $color-primary; }
+.no-data { text-align: center; padding: 2rem; color: $color-text-muted; }
+
+.icon-success { color: $color-success; }
+.icon-primary { color: $color-primary; }
+.icon-warning-alt { color: $color-warning-alt; }
+
+.cards-grid { display: flex; flex-direction: column; gap: 0.75rem; }
+.contrib-card { padding: 1rem; cursor: pointer; }
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.card-header strong { font-size: 1rem; }
+.card-id { font-size: 0.75rem; color: $color-text-muted; }
+.card-amounts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid $color-divider;
+  border-bottom: 1px solid $color-divider;
+}
+.card-amounts > div { display: flex; flex-direction: column; gap: 0.25rem; }
+.label { font-size: 0.7rem; text-transform: uppercase; color: $color-text-muted; }
+.card-contact {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: $color-text-secondary;
+}
+.card-contact mat-icon { font-size: 1rem; width: 1rem; height: 1rem; color: $color-text-muted; }
+.card-pere {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  color: $color-text-secondary;
+  font-style: italic;
+}
+.card-pere mat-icon { font-size: 1rem; width: 1rem; height: 1rem; color: $color-text-muted; }
+.empty-card { padding: 2rem; text-align: center; color: $color-text-muted; font-style: italic; }

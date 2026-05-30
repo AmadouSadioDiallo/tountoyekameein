@@ -76,7 +76,7 @@ import { ColumnSelectionDialogComponent } from '../shared/column-selection-dialo
 
       <mat-card class="summary-card">
         <div class="summary-info">
-          <mat-icon style="color:#f57c00">info</mat-icon>
+          <mat-icon class="icon-warning">info</mat-icon>
           <div>
             <strong>{{ filteredPersons().length }}</strong> personne(s) active(s) n'ont pas encore cotisé à ce projet.
             <div class="hint">Seules les personnes avec le statut "Actif" sont listées.</div>
@@ -162,71 +162,7 @@ import { ColumnSelectionDialogComponent } from '../shared/column-selection-dialo
       }
     }
   `,
-  styles: [
-    `
-      .header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-      .header h1 { margin: 0; display: flex; align-items: center; gap: 0.5rem; }
-      .title-icon { color: #f57c00; }
-      .loading { display: flex; justify-content: center; padding: 4rem; }
-      .projet-info-card { padding: 1.5rem; margin-bottom: 1rem; }
-      .projet-info {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 1.5rem;
-      }
-      .projet-info .label {
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        color: #888;
-        letter-spacing: 0.05em;
-        margin-bottom: 0.25rem;
-      }
-      .projet-link { color: #3f51b5; text-decoration: none; font-weight: 500; font-size: 1.05rem; }
-      .projet-link:hover { text-decoration: underline; }
-      .chip {
-        padding: 4px 10px;
-        border-radius: 12px;
-        font-size: 0.85rem;
-        font-weight: 500;
-      }
-      .chip-actif { background: #c8e6c9; color: #1b5e20; }
-      .chip-terminé { background: #bbdefb; color: #0d47a1; }
-      .chip-annulé { background: #ffcdd2; color: #b71c1c; }
-      .summary-card { padding: 1.25rem 1.5rem; margin-bottom: 1rem; background: #fff8e1; }
-      .summary-info { display: flex; align-items: center; gap: 1rem; }
-      .summary-info mat-icon { font-size: 2rem; width: 2rem; height: 2rem; }
-      .summary-info strong { font-size: 1.25rem; color: #f57c00; }
-      .hint { font-size: 0.85rem; color: #888; margin-top: 0.25rem; }
-      .search { width: 100%; max-width: 400px; margin-bottom: 1rem; }
-      .table-wrap { overflow: auto; background: white; border-radius: 4px; }
-      table { width: 100%; }
-      .link { color: #3f51b5; text-decoration: none; font-weight: 500; }
-      .link:hover { text-decoration: underline; }
-      .no-data { text-align: center; padding: 2rem; color: #4caf50; font-weight: 500; }
-
-      .cards-grid { display: flex; flex-direction: column; gap: 0.75rem; }
-      .person-card { padding: 1rem; cursor: pointer; }
-      .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 0.5rem;
-        margin-bottom: 0.75rem;
-      }
-      .card-header strong { font-size: 1rem; }
-      .card-id { font-size: 0.75rem; color: #888; }
-      .card-body { display: flex; flex-direction: column; gap: 0.4rem; }
-      .card-row { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: #555; }
-      .card-row mat-icon { font-size: 1rem; width: 1rem; height: 1rem; color: #888; }
-      .empty-card {
-        padding: 2rem;
-        text-align: center;
-        color: #4caf50;
-        font-weight: 500;
-        background: #e8f5e9;
-      }
-    `,
-  ],
+  styleUrl: './projet-non-contributors.component.scss',
 })
 export class ProjetNonContributorsComponent implements OnInit {
   private readonly projetsFacade = inject(ProjetsFacade);

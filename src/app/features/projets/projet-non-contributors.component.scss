@@ -1,0 +1,65 @@
+@use 'app/styles/variables' as *;
+
+.header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.header h1 { margin: 0; display: flex; align-items: center; gap: 0.5rem; }
+.title-icon { color: $color-warning; }
+.loading { display: flex; justify-content: center; padding: 4rem; }
+.projet-info-card { padding: 1.5rem; margin-bottom: 1rem; }
+.projet-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+}
+.projet-info .label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: $color-text-muted;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+.projet-link { color: $color-primary; text-decoration: none; font-weight: 500; font-size: 1.05rem; }
+.projet-link:hover { text-decoration: underline; }
+.chip {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.chip-actif { background: $color-success-light; color: $color-success-dark; }
+.chip-terminé { background: $color-info-light; color: $color-info-dark; }
+.chip-annulé { background: $color-error-light; color: $color-error-dark; }
+.summary-card { padding: 1.25rem 1.5rem; margin-bottom: 1rem; background: $color-bg-summary; }
+.summary-info { display: flex; align-items: center; gap: 1rem; }
+.summary-info mat-icon { font-size: 2rem; width: 2rem; height: 2rem; }
+.summary-info strong { font-size: 1.25rem; color: $color-warning; }
+.hint { font-size: 0.85rem; color: $color-text-muted; margin-top: 0.25rem; }
+.search { width: 100%; max-width: 400px; margin-bottom: 1rem; }
+.table-wrap { overflow: auto; background: white; border-radius: 4px; }
+table { width: 100%; }
+.link { color: $color-primary; text-decoration: none; font-weight: 500; }
+.link:hover { text-decoration: underline; }
+.no-data { text-align: center; padding: 2rem; color: $color-success; font-weight: 500; }
+
+.icon-warning { color: $color-warning; }
+
+.cards-grid { display: flex; flex-direction: column; gap: 0.75rem; }
+.person-card { padding: 1rem; cursor: pointer; }
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.card-header strong { font-size: 1rem; }
+.card-id { font-size: 0.75rem; color: $color-text-muted; }
+.card-body { display: flex; flex-direction: column; gap: 0.4rem; }
+.card-row { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: $color-text-secondary; }
+.card-row mat-icon { font-size: 1rem; width: 1rem; height: 1rem; color: $color-text-muted; }
+.empty-card {
+  padding: 2rem;
+  text-align: center;
+  color: $color-success;
+  font-weight: 500;
+  background: $color-success-bg;
+}
