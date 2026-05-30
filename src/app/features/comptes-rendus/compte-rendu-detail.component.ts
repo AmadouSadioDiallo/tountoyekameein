@@ -12,6 +12,7 @@ import { ProjetsFacade } from '../../core/services/projets.facade';
 import { CurrentUserService } from '../../core/services/current-user.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog.component';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-compte-rendu-detail',
@@ -31,6 +32,12 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog.component';
         <mat-icon>arrow_back</mat-icon>
       </a>
       <h1>Compte rendu</h1>
+      @if (cr()) {
+        <button mat-flat-button color="primary" (click)="exportPdf()">
+          <mat-icon>picture_as_pdf</mat-icon>
+          Exporter PDF
+        </button>
+      }
       @if (isAdmin() && cr()) {
         <a mat-flat-button color="primary" [routerLink]="['/comptes-rendus', cr()!.id, 'edit']">
           <mat-icon>edit</mat-icon>
@@ -210,6 +217,115 @@ export class CompteRenduDetailComponent implements OnInit {
     } finally {
       this.loading.set(false);
     }
+  }
+
+  exportPdf(): void {
+    const c = this.cr();
+    if (!c) return;
+
+    const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const marginX = 14;
+    const contentWidth = pageWidth - 2 * marginX;
+    let y = 15;
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.setTextColor(63, 81, 181);
+    doc.text('Tountoye ka méïn', marginX, y);
+
+    y += 8;
+    doc.setFontSize(13);
+    doc.setTextColor(60, 60, 60);
+    doc.text('Compte rendu de réunion', marginX, y);
+
+    y += 5;
+    doc.setDrawColor(200, 200, 200);
+    doc.line(marginX, y, pageWidth - marginX, y);
+    y += 8;
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.setTextColor(33, 33, 33);
+    const titleLines = doc.splitTextToSize(c.nomReunion, contentWidth);
+    doc.text(titleLines, marginX, y);
+    y += titleLines.length * 6 + 4;
+
+    const datePipe = new DatePipe('fr-FR');
+    const fields: { label: string; value: string }[] = [
+      { label: 'Date', value: datePipe.transform(c.date, 'EEEE d MMMM y') ?? c.date },
+      { label: 'Rédacteur', value: c.redacteur },
+    ];
+    if (c.lieu) fields.push({ label: 'Lieu', value: c.lieu });
+    const p = this.projet();
+    fields.push({ label: 'Projet', value: p ? p.nom : 'Réunion générale' });
+
+    doc.setFillColor(245, 245, 247);
+    doc.rect(marginX, y - 4, contentWidth, fields.length * 7 + 4, 'F');
+
+    for (const field of fields) {
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9);
+      doc.setTextColor(120, 120, 120);
+      doc.text(`${field.label} :`, marginX + 3, y);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(50, 50, 50);
+      doc.text(field.value, marginX + 30, y);
+      y += 7;
+    }
+
+    y += 6;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(63, 81, 181);
+    doc.text('CONTENU', marginX, y);
+    y += 2;
+    doc.setDrawColor(63, 81, 181);
+    doc.line(marginX, y, marginX + 25, y);
+    y += 6;
+
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = c.contenu;
+    const plainText = tempDiv.textContent ?? '';
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(50, 50, 50);
+    const lines = doc.splitTextToSize(plainText, contentWidth);
+    const pageHeight = doc.internal.pageSize.getHeight();
+
+    for (const line of lines) {
+      if (y > pageHeight - 20) {
+        doc.addPage();
+        y = 15;
+      }
+      doc.text(line, marginX, y);
+      y += 5;
+    }
+
+    const pageCount = doc.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(150, 150, 150);
+      doc.text(
+        `Page ${i} / ${pageCount}`,
+        pageWidth - marginX,
+        pageHeight - 8,
+        { align: 'right' },
+      );
+      doc.text('Tountoye ka méïn — Gestion adhérents', marginX, pageHeight - 8);
+    }
+
+    const dateSlug = new Date().toISOString().slice(0, 10);
+    const slug = c.nomReunion
+      .replace(/[^\w\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .toLowerCase()
+      .slice(0, 40);
+    doc.save(`compte-rendu-${slug}-${dateSlug}.pdf`);
+    this.notif.success('PDF téléchargé');
   }
 
   confirmDelete(): void {
