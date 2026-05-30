@@ -53,21 +53,21 @@ const MAX_PROJETS_AFFICHES = 6;
     } @else if (stats(); as s) {
       <div class="stats-grid">
         <mat-card class="stat-card" routerLink="/persons">
-          <mat-icon class="stat-icon" style="color:#3f51b5">people</mat-icon>
+          <mat-icon class="stat-icon icon-primary">people</mat-icon>
           <div class="stat-value">{{ s.totalPersons }}</div>
           <div class="stat-label">Personnes</div>
           <div class="stat-sub">{{ s.actifs }} actifs</div>
         </mat-card>
 
         <mat-card class="stat-card" routerLink="/projets">
-          <mat-icon class="stat-icon" style="color:#009688">folder</mat-icon>
+          <mat-icon class="stat-icon icon-teal">folder</mat-icon>
           <div class="stat-value">{{ s.totalProjets }}</div>
           <div class="stat-label">Projets actifs</div>
           <div class="stat-sub">{{ s.projetsActifs }} en cours</div>
         </mat-card>
 
         <mat-card class="stat-card" routerLink="/cotisations">
-          <mat-icon class="stat-icon" style="color:#673ab7">payments</mat-icon>
+          <mat-icon class="stat-icon icon-purple">payments</mat-icon>
           <div class="stat-value">{{ s.nbCotisations }}</div>
           <div class="stat-label">Cotisations</div>
           <div class="stat-sub">{{ s.totalCotisations | gnf }} collectés</div>
@@ -117,61 +117,7 @@ const MAX_PROJETS_AFFICHES = 6;
       </mat-card>
     }
   `,
-  styles: [
-    `
-      .page-title { margin-bottom: 2rem; font-weight: 500; }
-      .section-title { margin: 2rem 0 1rem; font-weight: 500; font-size: 1.25rem; }
-      .loading { display: flex; justify-content: center; padding: 4rem; }
-      .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: 1.25rem;
-        margin-bottom: 2rem;
-      }
-      .stat-card {
-        padding: 1.5rem;
-        text-align: center;
-        cursor: pointer;
-        transition: transform 0.15s, box-shadow 0.15s;
-      }
-      .stat-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      }
-      .stat-icon { font-size: 2.5rem; width: 2.5rem; height: 2.5rem; }
-      .stat-value { font-size: 2rem; font-weight: 600; margin-top: 0.5rem; }
-      .stat-label { color: #666; font-size: 0.95rem; margin-top: 0.25rem; }
-      .stat-sub { color: #999; font-size: 0.8rem; margin-top: 0.5rem; }
-      .projets-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 1rem;
-        margin-bottom: 2rem;
-      }
-      .projet-card { padding: 1.5rem; cursor: pointer; transition: box-shadow 0.15s; }
-      .projet-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-      .projet-card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.75rem;
-      }
-      .projet-card-header h3 { margin: 0; font-size: 1.05rem; }
-      .chip { padding: 3px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: 500; }
-      .chip-actif { background: #c8e6c9; color: #1b5e20; }
-      .chip-terminé { background: #bbdefb; color: #0d47a1; }
-      .chip-annulé { background: #ffcdd2; color: #b71c1c; }
-      .projet-amounts {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
-        font-size: 0.9rem;
-        color: #555;
-      }
-      .actions { margin-top: 2rem; display: flex; gap: 0.75rem; flex-wrap: wrap; }
-      .error-card { padding: 1rem; display: flex; gap: 1rem; align-items: center; }
-    `,
-  ],
+  styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
   private readonly personsFacade = inject(PersonsFacade);
