@@ -1,0 +1,78 @@
+@use 'app/styles/variables' as *;
+
+.header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.header h1 { margin: 0; flex: 1; }
+.loading { display: flex; justify-content: center; padding: 4rem; }
+.detail-card { padding: 2rem; }
+.cr-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid $color-border-light;
+}
+.cr-header h2 { margin: 0; font-size: 1.5rem; }
+.cr-id {
+  background: $color-primary-light;
+  color: $color-primary;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.field { display: flex; align-items: center; gap: 0.75rem; }
+.field mat-icon { color: $color-primary; }
+.field label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: $color-text-muted;
+  letter-spacing: 0.05em;
+  display: block;
+}
+.field span { font-size: 1rem; }
+.projet-link {
+  color: $color-primary;
+  text-decoration: none;
+  font-weight: 500;
+}
+.projet-link:hover { text-decoration: underline; }
+.muted { color: $color-text-muted; font-style: italic; }
+.section-title {
+  margin: 0 0 1rem;
+  color: $color-primary;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.content {
+  background: $color-bg-card;
+  padding: 1.5rem;
+  border-radius: 4px;
+  line-height: 1.6;
+  font-size: 1rem;
+  color: $color-text-dark;
+  border-left: 3px solid $color-primary;
+}
+.content h1, .content h2, .content h3 { margin: 0.5rem 0; }
+.content ul, .content ol { padding-left: 1.5rem; margin: 0.5rem 0; }
+.content p { margin: 0.25rem 0; }
+.meta-footer {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid $color-border-light;
+  display: flex;
+  gap: 2rem;
+  color: $color-text-muted;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}

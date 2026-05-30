@@ -144,62 +144,7 @@ import { CurrentUserService } from '../../core/services/current-user.service';
       </mat-card>
     }
   `,
-  styles: [
-    `
-      .header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; }
-      .header h1 { margin: 0; }
-      .loading { display: flex; justify-content: center; padding: 4rem; }
-      .form-card { padding: 2rem; max-width: 1000px; }
-      .section-title {
-        margin: 1.5rem 0 1rem;
-        color: #3f51b5;
-        font-size: 0.95rem;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-      .section-title:first-child { margin-top: 0; }
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 1rem 1.5rem;
-        margin-bottom: 1rem;
-      }
-      .full { grid-column: 1 / -1; width: 100%; }
-      .actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 0.75rem;
-        margin-top: 1.5rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid #eee;
-      }
-      .warn { color: #f57c00 !important; font-weight: 500; }
-      .quill-wrapper {
-        width: 100%;
-        margin-bottom: 1rem;
-        border: 1px solid rgba(0,0,0,0.12);
-        border-radius: 4px;
-        overflow: hidden;
-      }
-      .quill-wrapper ::ng-deep quill-editor { display: block; }
-      .quill-wrapper ::ng-deep .ql-container { min-height: 250px; }
-      .quill-wrapper ::ng-deep .ql-editor { min-height: 250px; }
-      .quill-wrapper:focus-within { border-color: #3f51b5; }
-      .quill-wrapper.invalid { border-color: #f44336; }
-      .quill-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.5rem 1rem;
-        font-size: 0.75rem;
-        color: #888;
-        border-top: 1px solid rgba(0,0,0,0.06);
-      }
-      .quill-error { color: #f44336; font-weight: 500; }
-      .quill-count { margin-left: auto; }
-    `,
-  ],
+  styleUrl: './compte-rendu-form.component.scss',
 })
 export class CompteRenduFormComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
