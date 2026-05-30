@@ -20,7 +20,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
       },
-      // Persons
       {
         path: 'persons',
         loadComponent: () =>
@@ -43,7 +42,6 @@ export const routes: Routes = [
           import('./features/persons/person-form.component').then((m) => m.PersonFormComponent),
         canActivate: [adminGuard],
       },
-      // Projets
       {
         path: 'projets',
         loadComponent: () =>
@@ -76,7 +74,6 @@ export const routes: Routes = [
           import('./features/projets/projet-form.component').then((m) => m.ProjetFormComponent),
         canActivate: [adminGuard],
       },
-      // Cotisations
       {
         path: 'cotisations',
         loadComponent: () =>
@@ -104,7 +101,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/cotisations/non-contributors.component').then((m) => m.NonContributorsComponent),
       },
-      // Comptes rendus
       {
         path: 'comptes-rendus',
         loadComponent: () =>
@@ -127,7 +123,6 @@ export const routes: Routes = [
           import('./features/comptes-rendus/compte-rendu-form.component').then((m) => m.CompteRenduFormComponent),
         canActivate: [adminGuard],
       },
-      // Historique
       {
         path: 'historique',
         loadComponent: () =>

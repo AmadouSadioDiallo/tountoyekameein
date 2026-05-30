@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { SheetsApiService } from './sheets-api.service';
 import { environment } from '../../../environments/environment';
-import { AppUser, USER_COLUMNS } from '../models/user.model';
+import { AppUser, USER_COLUMNS } from '../models';
 import { rowToObject } from '../utils/sheet-mapper';
 
 const SHEET = environment.sheets.users;

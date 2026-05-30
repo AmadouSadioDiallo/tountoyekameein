@@ -1,5 +1,5 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { CurrentUser } from '../models/user.model';
+import { CurrentUser } from '../models';
 import { GoogleAuthService } from './google-auth.service';
 import { UsersRepository } from './users.repository';
 

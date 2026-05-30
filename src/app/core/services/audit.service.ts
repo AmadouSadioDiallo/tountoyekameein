@@ -6,7 +6,7 @@ import {
   AuditEntity,
   AuditEntry,
   AUDIT_COLUMNS,
-} from '../models/audit.model';
+} from '../models';
 import { objectToRow, rowToObject } from '../utils/sheet-mapper';
 import { CurrentUserService } from './current-user.service';
 

@@ -5,7 +5,7 @@ import {
   Projet,
   ProjetFormData,
   PROJET_COLUMNS,
-} from '../models/projet.model';
+} from '../models';
 import { objectToRow, rowToObject } from '../utils/sheet-mapper';
 import { nextId } from '../utils/id-generator';
 

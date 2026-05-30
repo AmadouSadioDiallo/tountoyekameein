@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { PersonsRepository } from './persons.repository';
 import { AuditService } from './audit.service';
-import { Person, PersonFormData } from '../models/person.model';
+import { Person, PersonFormData } from '../models';
 
 @Injectable({ providedIn: 'root' })
 export class PersonsFacade {

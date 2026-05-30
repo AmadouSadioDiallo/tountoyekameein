@@ -5,7 +5,7 @@ import {
   Cotisation,
   CotisationFormData,
   COTISATION_COLUMNS,
-} from '../models/cotisation.model';
+} from '../models';
 import { objectToRow, rowToObject } from '../utils/sheet-mapper';
 import { nextId } from '../utils/id-generator';
 

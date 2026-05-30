@@ -5,7 +5,7 @@ import {
   CompteRendu,
   CompteRenduFormData,
   COMPTE_RENDU_COLUMNS,
-} from '../models/compte-rendu.model';
+} from '../models';
 import { objectToRow, rowToObject } from '../utils/sheet-mapper';
 import { nextId } from '../utils/id-generator';
 

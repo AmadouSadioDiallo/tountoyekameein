@@ -5,7 +5,7 @@ import {
   Person,
   PersonFormData,
   PERSON_COLUMNS,
-} from '../models/person.model';
+} from '../models';
 import { objectToRow, rowToObject } from '../utils/sheet-mapper';
 import { nextId } from '../utils/id-generator';
 
