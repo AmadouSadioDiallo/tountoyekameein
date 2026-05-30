@@ -223,46 +223,7 @@ import { NotificationService } from '../../core/services/notification.service';
       </mat-card>
     }
   `,
-  styles: [
-    `
-      .header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; }
-      .header h1 { margin: 0; }
-      .loading { display: flex; justify-content: center; padding: 4rem; }
-      .form-card { padding: 2rem; }
-      .section-title {
-        margin: 1.5rem 0 1rem;
-        color: #3f51b5;
-        font-size: 0.95rem;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-      .section-title:first-child { margin-top: 0; }
-      .optional {
-        text-transform: none;
-        font-weight: 400;
-        color: #888;
-        font-size: 0.85rem;
-        margin-left: 0.5rem;
-      }
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 1rem 1.5rem;
-        margin-bottom: 1rem;
-      }
-      .full { grid-column: 1 / -1; }
-      mat-divider { margin: 1rem 0; }
-      .actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 0.75rem;
-        margin-top: 1.5rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid #eee;
-      }
-    `,
-  ],
+  styleUrl: './person-form.component.scss',
 })
 export class PersonFormComponent implements OnInit {
   private readonly fb = inject(FormBuilder);

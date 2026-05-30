@@ -141,53 +141,7 @@ import { GnfPipe } from '../../core/pipes/gnf.pipe';
       </mat-card>
     }
   `,
-  styles: [
-    `
-      .header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-      .header h1 { margin: 0; flex: 1; }
-      .loading { display: flex; justify-content: center; padding: 4rem; }
-      .detail-card, .cotisations-card { padding: 2rem; margin-bottom: 1.5rem; }
-      .section-title {
-        margin: 1.5rem 0 1rem;
-        color: #3f51b5;
-        font-size: 0.95rem;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        padding-bottom: 0.5rem;
-        border-bottom: 1px solid #e8eaf6;
-      }
-      .section-title:first-child { margin-top: 0; }
-      .detail-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 1.25rem 1.5rem;
-        margin-bottom: 0.5rem;
-      }
-      .field { display: flex; flex-direction: column; gap: 0.25rem; }
-      .field.full { grid-column: 1 / -1; }
-      .field label {
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        color: #888;
-      }
-      .field span { font-size: 1rem; color: #222; }
-      .notes-content { white-space: pre-wrap; }
-      .cot-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-      }
-      .cot-header h2 { margin: 0; }
-      .total { font-size: 1.1rem; }
-      .empty { color: #888; font-style: italic; }
-      .table-wrap { overflow: auto; }
-      table { width: 100%; }
-    `,
-  ],
+  styleUrl: './person-detail.component.scss',
 })
 export class PersonDetailComponent implements OnInit {
   private readonly personsFacade = inject(PersonsFacade);
