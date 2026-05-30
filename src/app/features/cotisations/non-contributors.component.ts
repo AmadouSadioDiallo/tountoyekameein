@@ -37,7 +37,7 @@ import { NotificationService } from '../../core/services/notification.service';
     } @else {
       <mat-card class="summary-card">
         <div class="metric">
-          <mat-icon style="color:#ff9800">warning</mat-icon>
+          <mat-icon class="icon-warning-alt">warning</mat-icon>
           <div>
             <div class="metric-value">{{ persons().length }}</div>
             <div class="metric-label">Personne(s) sans cotisation</div>
@@ -92,20 +92,7 @@ import { NotificationService } from '../../core/services/notification.service';
       </table>
     }
   `,
-  styles: [
-    `
-      h1 { margin-bottom: 1.5rem; }
-      .loading { display: flex; justify-content: center; padding: 4rem; }
-      .summary-card { padding: 1.5rem; margin-bottom: 1.5rem; }
-      .metric { display: flex; align-items: center; gap: 1rem; }
-      .metric mat-icon { font-size: 2.5rem; width: 2.5rem; height: 2.5rem; }
-      .metric-value { font-size: 1.75rem; font-weight: 600; }
-      .metric-label { color: #666; font-size: 0.9rem; }
-      .search { width: 100%; max-width: 400px; margin-bottom: 1rem; }
-      table { width: 100%; background: white; }
-      .no-data { text-align: center; padding: 2rem; color: #888; }
-    `,
-  ],
+  styleUrl: './non-contributors.component.scss',
 })
 export class NonContributorsComponent implements OnInit {
   private readonly personsFacade = inject(PersonsFacade);

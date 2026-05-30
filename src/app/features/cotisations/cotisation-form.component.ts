@@ -152,37 +152,7 @@ import { NotificationService } from '../../core/services/notification.service';
       </mat-card>
     }
   `,
-  styles: [
-    `
-      .header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; }
-      .header h1 { margin: 0; }
-      .loading { display: flex; justify-content: center; padding: 4rem; }
-      .form-card { padding: 2rem; max-width: 900px; }
-      .section-title {
-        margin: 1.5rem 0 1rem;
-        color: #3f51b5;
-        font-size: 0.95rem;
-        font-weight: 500;
-        text-transform: uppercase;
-      }
-      .section-title:first-child { margin-top: 0; }
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 1rem 1.5rem;
-        margin-bottom: 1rem;
-      }
-      .full { width: 100%; display: block; margin-top: 1rem; }
-      .actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 0.75rem;
-        margin-top: 1.5rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid #eee;
-      }
-    `,
-  ],
+  styleUrl: './cotisation-form.component.scss',
 })
 export class CotisationFormComponent implements OnInit {
   private readonly fb = inject(FormBuilder);

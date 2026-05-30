@@ -219,61 +219,7 @@ interface CotisationRow {
       }
     }
   `,
-  styles: [
-    `
-      .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1.5rem;
-      }
-      .header h1 { margin: 0; }
-      .filters {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        margin-bottom: 1rem;
-      }
-      .search-field { flex: 1; min-width: 200px; }
-      .loading { display: flex; justify-content: center; padding: 4rem; }
-      .summary-card { padding: 1rem 1.5rem !important; margin-bottom: 1rem; }
-      .summary-row { display: flex; gap: 3rem; flex-wrap: wrap; }
-      .summary-item { display: flex; gap: 0.5rem; align-items: center; }
-      .summary-item strong { color: #3f51b5; font-size: 1.1rem; }
-      .table-container { overflow: auto; background: white; border-radius: 4px; }
-      table { width: 100%; }
-      .actions-col { width: 100px; text-align: right; }
-      .no-data { text-align: center; padding: 2rem; color: #888; }
-      .link { color: #3f51b5; text-decoration: none; }
-      .link:hover { text-decoration: underline; }
-      .muted { color: #888; }
-      .cards-grid { display: flex; flex-direction: column; gap: 0.75rem; }
-      .cot-card { padding: 1rem; }
-      .card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.75rem;
-      }
-      .card-amount { font-size: 1.25rem; font-weight: 600; color: #3f51b5; }
-      .card-date { color: #888; font-size: 0.85rem; }
-      .card-body { display: flex; flex-direction: column; gap: 0.5rem; }
-      .card-row { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; }
-      .card-row mat-icon { font-size: 1rem; width: 1rem; height: 1rem; color: #888; }
-      .card-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.25rem; }
-      .chip-mode { background: #e3f2fd; color: #0d47a1; padding: 3px 8px; border-radius: 10px; font-size: 0.75rem; }
-      .chip-periode { background: #f3e5f5; color: #4a148c; padding: 3px 8px; border-radius: 10px; font-size: 0.75rem; }
-      .card-actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 0.25rem;
-        margin-top: 0.75rem;
-        padding-top: 0.5rem;
-        border-top: 1px solid #f0f0f0;
-      }
-      .empty-card { padding: 2rem; text-align: center; color: #888; font-style: italic; }
-    `,
-  ],
+  styleUrl: './cotisations-list.component.scss',
 })
 export class CotisationsListComponent implements OnInit {
   private readonly cotisationsFacade = inject(CotisationsFacade);

@@ -45,14 +45,14 @@ interface ContributorRow {
       <mat-card class="summary-card">
         <div class="summary">
           <div class="metric">
-            <mat-icon style="color:#009688">people</mat-icon>
+            <mat-icon class="icon-teal">people</mat-icon>
             <div>
               <div class="metric-value">{{ rows().length }}</div>
               <div class="metric-label">Contributeurs</div>
             </div>
           </div>
           <div class="metric">
-            <mat-icon style="color:#673ab7">payments</mat-icon>
+            <mat-icon class="icon-purple">payments</mat-icon>
             <div>
               <div class="metric-value">{{ totalGlobal() | gnf }}</div>
               <div class="metric-label">Total cotisé</div>
@@ -110,22 +110,7 @@ interface ContributorRow {
       </div>
     }
   `,
-  styles: [
-    `
-      h1 { margin-bottom: 1.5rem; }
-      .loading { display: flex; justify-content: center; padding: 4rem; }
-      .summary-card { padding: 1.5rem; margin-bottom: 1.5rem; }
-      .summary { display: flex; gap: 3rem; flex-wrap: wrap; }
-      .metric { display: flex; align-items: center; gap: 1rem; }
-      .metric mat-icon { font-size: 2.5rem; width: 2.5rem; height: 2.5rem; }
-      .metric-value { font-size: 1.75rem; font-weight: 600; }
-      .metric-label { color: #666; font-size: 0.9rem; }
-      .search { width: 100%; max-width: 400px; margin-bottom: 1rem; }
-      .table-wrap { overflow: auto; }
-      table { width: 100%; background: white; }
-      .no-data { text-align: center; padding: 2rem; color: #888; }
-    `,
-  ],
+  styleUrl: './contributors.component.scss',
 })
 export class ContributorsComponent implements OnInit {
   private readonly personsFacade = inject(PersonsFacade);

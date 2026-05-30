@@ -1,0 +1,53 @@
+@use 'app/styles/variables' as *;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.header h1 { margin: 0; }
+.filters {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.search-field { flex: 1; min-width: 200px; }
+.loading { display: flex; justify-content: center; padding: 4rem; }
+.summary-card { padding: 1rem 1.5rem !important; margin-bottom: 1rem; }
+.summary-row { display: flex; gap: 3rem; flex-wrap: wrap; }
+.summary-item { display: flex; gap: 0.5rem; align-items: center; }
+.summary-item strong { color: $color-primary; font-size: 1.1rem; }
+.table-container { overflow: auto; background: white; border-radius: 4px; }
+table { width: 100%; }
+.actions-col { width: 100px; text-align: right; }
+.no-data { text-align: center; padding: 2rem; color: $color-text-muted; }
+.link { color: $color-primary; text-decoration: none; }
+.link:hover { text-decoration: underline; }
+.muted { color: $color-text-muted; }
+.cards-grid { display: flex; flex-direction: column; gap: 0.75rem; }
+.cot-card { padding: 1rem; }
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.card-amount { font-size: 1.25rem; font-weight: 600; color: $color-primary; }
+.card-date { color: $color-text-muted; font-size: 0.85rem; }
+.card-body { display: flex; flex-direction: column; gap: 0.5rem; }
+.card-row { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; }
+.card-row mat-icon { font-size: 1rem; width: 1rem; height: 1rem; color: $color-text-muted; }
+.card-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.25rem; }
+.chip-mode { background: $color-info-bg; color: $color-info-dark; padding: 3px 8px; border-radius: 10px; font-size: 0.75rem; }
+.chip-periode { background: $color-purple-light; color: $color-purple-dark; padding: 3px 8px; border-radius: 10px; font-size: 0.75rem; }
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid $color-divider;
+}
+.empty-card { padding: 2rem; text-align: center; color: $color-text-muted; font-style: italic; }
