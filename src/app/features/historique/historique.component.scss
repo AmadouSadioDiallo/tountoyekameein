@@ -1,0 +1,39 @@
+@use 'app/styles/variables' as *;
+
+h1 { margin-bottom: 1.5rem; }
+.filters {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.search-field { flex: 1; min-width: 280px; }
+.loading { display: flex; justify-content: center; padding: 4rem; }
+.entries { display: block; margin-bottom: 1rem; }
+mat-expansion-panel { margin-bottom: 4px; }
+mat-panel-title { gap: 1rem; align-items: center; }
+mat-panel-description { justify-content: flex-end; gap: 1rem; }
+.badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  color: white;
+}
+.badge-create { background: $color-success; }
+.badge-update { background: $color-info; }
+.badge-delete { background: $color-error-bright; }
+.entity { font-weight: 500; }
+.entity-id { color: $color-text-label; font-size: 0.9rem; }
+.user { color: $color-text-secondary; }
+.time { color: $color-text-muted; font-size: 0.85rem; }
+.details {
+  background: $color-bg-hover;
+  padding: 1rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  max-height: 400px;
+  overflow: auto;
+  margin: 0;
+}
+.empty { color: $color-text-muted; font-style: italic; text-align: center; padding: 2rem; }

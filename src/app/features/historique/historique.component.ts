@@ -96,47 +96,7 @@ import { NotificationService } from '../../core/services/notification.service';
       />
     }
   `,
-  styles: [
-    `
-      h1 { margin-bottom: 1.5rem; }
-      .filters {
-        display: flex;
-        gap: 1rem;
-        flex-wrap: wrap;
-        margin-bottom: 1rem;
-      }
-      .search-field { flex: 1; min-width: 280px; }
-      .loading { display: flex; justify-content: center; padding: 4rem; }
-      .entries { display: block; margin-bottom: 1rem; }
-      mat-expansion-panel { margin-bottom: 4px; }
-      mat-panel-title { gap: 1rem; align-items: center; }
-      mat-panel-description { justify-content: flex-end; gap: 1rem; }
-      .badge {
-        font-size: 0.7rem;
-        font-weight: 600;
-        padding: 3px 8px;
-        border-radius: 4px;
-        color: white;
-      }
-      .badge-create { background: #4caf50; }
-      .badge-update { background: #2196f3; }
-      .badge-delete { background: #f44336; }
-      .entity { font-weight: 500; }
-      .entity-id { color: #666; font-size: 0.9rem; }
-      .user { color: #555; }
-      .time { color: #888; font-size: 0.85rem; }
-      .details {
-        background: #f5f5f5;
-        padding: 1rem;
-        border-radius: 4px;
-        font-size: 0.85rem;
-        max-height: 400px;
-        overflow: auto;
-        margin: 0;
-      }
-      .empty { color: #888; font-style: italic; text-align: center; padding: 2rem; }
-    `,
-  ],
+  styleUrl: './historique.component.scss',
 })
 export class HistoriqueComponent implements OnInit {
   private readonly audit = inject(AuditService);
