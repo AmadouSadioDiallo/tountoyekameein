@@ -54,46 +54,7 @@ import { NotificationService } from '../../core/services/notification.service';
       </mat-card>
     </div>
   `,
-  styles: [
-    `
-      .login-container {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        padding: 1rem;
-      }
-      .login-card {
-        max-width: 420px;
-        width: 100%;
-        padding: 1rem;
-      }
-      .info {
-        color: #555;
-        font-size: 0.9rem;
-        margin-bottom: 1.5rem;
-      }
-      .google-btn {
-        width: 100%;
-        height: 48px;
-        font-size: 1rem;
-      }
-      .loading {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-        padding: 1rem;
-      }
-      .loading-text {
-        text-align: center;
-        color: #888;
-        font-size: 0.85rem;
-        margin-top: 0.75rem;
-      }
-    `,
-  ],
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   private readonly auth = inject(GoogleAuthService);

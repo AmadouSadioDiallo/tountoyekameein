@@ -25,6 +25,9 @@
             "tsConfig": "tsconfig.app.json",
             "allowedCommonJsDependencies": ["quill-delta"],
             "assets": [],
+            "stylePreprocessorOptions": {
+              "includePaths": ["src"]
+            },
             "styles": [
               "node_modules/quill/dist/quill.snow.css",
               "src/styles.scss"

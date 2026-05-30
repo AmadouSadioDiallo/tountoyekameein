@@ -122,58 +122,7 @@ import { ResponsiveService } from '../core/services/responsive.service';
       </mat-sidenav-content>
     </mat-sidenav-container>
   `,
-  styles: [
-    `
-      .layout { height: 100vh; }
-      .sidenav {
-        width: 260px;
-        background: #fafafa;
-        border-right: 1px solid #e0e0e0;
-      }
-      .sidenav.mobile { width: 280px; }
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        padding: 1.25rem 1rem;
-        border-bottom: 1px solid #e0e0e0;
-      }
-      .brand-icon { font-size: 2rem; width: 2rem; height: 2rem; color: #3f51b5; }
-      .brand-title { font-weight: 600; font-size: 1.05rem; }
-      .brand-sub { font-size: 0.8rem; color: #888; }
-      .topbar { gap: 0.5rem; }
-      .topbar-title { font-size: 1rem; font-weight: 500; }
-      .spacer { flex: 1 1 auto; }
-      .avatar {
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        margin-right: 0.5rem;
-        vertical-align: middle;
-      }
-      .user-name { margin-right: 0.5rem; }
-      .user-btn { min-width: 0; padding: 0 0.5rem; }
-      .role-badge {
-        font-size: 0.7rem;
-        padding: 2px 8px;
-        border-radius: 10px;
-        background: #607d8b;
-        color: white;
-      }
-      .role-badge.admin { background: #d32f2f; }
-      .content {
-        padding: 1.5rem;
-        max-width: 1400px;
-        margin: 0 auto;
-      }
-      .mobile-content { padding: 1rem; }
-      .active-link {
-        background: #e8eaf6 !important;
-        color: #3f51b5 !important;
-      }
-      .active-link mat-icon { color: #3f51b5; }
-    `,
-  ],
+  styleUrl: './main-layout.component.scss',
 })
 export class MainLayoutComponent {
   @ViewChild('drawer') drawer!: MatSidenav;

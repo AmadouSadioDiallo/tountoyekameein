@@ -1,0 +1,50 @@
+@use 'app/styles/variables' as *;
+
+.layout { height: 100vh; }
+.sidenav {
+  width: 260px;
+  background: $color-bg-card;
+  border-right: 1px solid $color-border;
+}
+.sidenav.mobile { width: 280px; }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem 1rem;
+  border-bottom: 1px solid $color-border;
+}
+.brand-icon { font-size: 2rem; width: 2rem; height: 2rem; color: $color-primary; }
+.brand-title { font-weight: 600; font-size: 1.05rem; }
+.brand-sub { font-size: 0.8rem; color: $color-text-muted; }
+.topbar { gap: 0.5rem; }
+.topbar-title { font-size: 1rem; font-weight: 500; }
+.spacer { flex: 1 1 auto; }
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+.user-name { margin-right: 0.5rem; }
+.user-btn { min-width: 0; padding: 0 0.5rem; }
+.role-badge {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: $color-role-badge;
+  color: white;
+}
+.role-badge.admin { background: $color-error; }
+.content {
+  padding: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.mobile-content { padding: 1rem; }
+.active-link {
+  background: $color-primary-light !important;
+  color: $color-primary !important;
+}
+.active-link mat-icon { color: $color-primary; }
