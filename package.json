@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "private": true,
   "dependencies": {
@@ -35,6 +37,11 @@
     "@types/gapi": "^0.0.47",
     "@types/gapi.client.sheets-v4": "^0.0.4",
     "@types/google.accounts": "^0.0.14",
+    "@types/jest": "^30.0.0",
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1",
+    "jest-preset-angular": "^16.1.5",
+    "ts-jest": "^29.4.11",
     "typescript": "~5.9.0"
   }
 }
