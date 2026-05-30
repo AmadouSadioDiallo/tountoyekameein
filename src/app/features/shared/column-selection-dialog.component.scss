@@ -1,0 +1,25 @@
+@use 'app/styles/variables' as *;
+
+h2 { display: flex; align-items: center; gap: 0.5rem; }
+.title-icon { color: $color-error; }
+.hint { color: $color-text-label; margin-bottom: 1rem; }
+.actions-toolbar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid $color-border-light;
+}
+.columns-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 360px;
+  overflow-y: auto;
+}
+.warn {
+  color: $color-warning;
+  font-size: 0.85rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+}

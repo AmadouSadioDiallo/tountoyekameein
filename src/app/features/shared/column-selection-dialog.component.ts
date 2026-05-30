@@ -71,33 +71,7 @@ export interface ColumnSelectionData {
       </button>
     </mat-dialog-actions>
   `,
-  styles: [
-    `
-      h2 { display: flex; align-items: center; gap: 0.5rem; }
-      .title-icon { color: #d32f2f; }
-      .hint { color: #666; margin-bottom: 1rem; }
-      .actions-toolbar {
-        display: flex;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid #eee;
-      }
-      .columns-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        max-height: 360px;
-        overflow-y: auto;
-      }
-      .warn {
-        color: #f57c00;
-        font-size: 0.85rem;
-        margin-top: 0.75rem;
-        margin-bottom: 0;
-      }
-    `,
-  ],
+  styleUrl: './column-selection-dialog.component.scss',
 })
 export class ColumnSelectionDialogComponent {
   readonly data = inject<ColumnSelectionData>(MAT_DIALOG_DATA);

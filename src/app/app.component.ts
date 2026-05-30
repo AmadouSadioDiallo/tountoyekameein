@@ -18,19 +18,7 @@ import { CurrentUserService } from './core/services/current-user.service';
       <router-outlet />
     }
   `,
-  styles: [
-    `
-      .boot {
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-        color: #555;
-      }
-    `,
-  ],
+  styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
   private readonly auth = inject(GoogleAuthService);
